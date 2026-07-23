@@ -334,6 +334,27 @@ function checkAnswers(){
 
         }
 
+        const area =
+        document.getElementById("sequence");
+
+        area.innerHTML = "";
+
+        sequence.forEach(item=>{
+
+            const card =
+            document.createElement("div");
+
+            card.className="card";
+
+            card.style.background=item.color;
+            card.style.color="white";
+
+            card.innerHTML=item.value;
+
+            area.appendChild(card);
+
+});
+
     });
 
     document.getElementById("result").innerHTML=
