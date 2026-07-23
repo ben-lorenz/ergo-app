@@ -1,14 +1,19 @@
 const colors = [
-    "#e74c3c",
-    "#3498db",
-    "#2ecc71",
-    "#f1c40f",
-    "#9b59b6",
-    "#1abc9c",
-    "#e67e22",
-    "#34495e",
-    "#ff69b4",
-    "#7f8c8d"
+    "#e74c3c", // Rot
+    "#3498db", // Blau
+    "#2ecc71", // Grün
+    "#f1c40f", // Gelb
+    "#9b59b6", // Lila
+    "#1abc9c", // Türkis
+    "#e67e22", // Orange
+    "#34495e", // Dunkelblau
+    "#ff69b4", // Pink
+    "#7f8c8d", // Grau
+    "#16a085", // Dunkeltürkis
+    "#8e44ad", // Dunkellila
+    "#d35400", // Dunkelorange
+    "#2980b9", // Mittelblau
+    "#27ae60"  // Dunkelgrün
 ];
 
 const timeOptions =
