@@ -17,9 +17,32 @@
 
             <h1>Therapie-App</h1>
 
+            <nav class="tabs">
+
+                <button
+                    class="tab active"
+                    data-page="memoryPage">
+
+                    Merkspiel
+
+                </button>
+
+                <button
+                    class="tab"
+                    data-page="clockPage">
+
+                    Uhrentraining
+
+                </button>
+
+            </nav>
+
         </header>
 
 
+        <section
+        id="memoryPage"
+        class="page active">
         <section class="settings">
 
             <h2>Einstellungen</h2>
@@ -76,11 +99,11 @@
 
             </div>
 
+            <div class="setting">
 
+                <label>Darstellung</label>
 
-            <label>Darstellung</label>
-
-            <div class="radioGroup">
+                <div class="radioGroup">
 
                 <label>
                     <input
@@ -264,11 +287,175 @@
             </div>
 
         </section>
+        </section>
+
+        <section
+    id="clockPage"
+    class="page">
+
+        <div class="settings">
+
+
+        <h3>Modus</h3>
+
+
+        <div class="radioGroup">
+
+
+        <label>
+
+<input
+type="radio"
+name="clockMode"
+value="label"
+checked>
+
+Ziffernblatt beschriften
+
+</label>
+
+
+        </div>
+
+
+
+        <h3>Schwierigkeit</h3>
+
+
+        <div class="radioGroup">
+
+
+<label>
+
+<input
+type="radio"
+name="clockDifficulty"
+value="easy"
+checked>
+
+Leicht (3/6/9/12)
+
+</label>
+
+
+
+<label>
+
+<input
+type="radio"
+name="clockDifficulty"
+value="medium">
+
+Mittel (12)
+
+</label>
+
+
+
+<label>
+
+<input
+type="radio"
+name="clockDifficulty"
+value="hard">
+
+Schwer (keine Hilfe)
+
+</label>
+
+
+        </div>
+
+        <div class="setting">
+
+    
+        <h3>Eingabeverhalten</h3>
+    
+
+    <div class="radioGroup">
+
+
+        <label>
+
+            <input
+                type="radio"
+                name="clockInputMode"
+                value="manual">
+
+            Manuell
+
+        </label>
+
+
+
+        <label>
+
+            <input
+                type="radio"
+                name="clockInputMode"
+                value="clockwise"
+                checked>
+
+            Im Uhrzeigersinn 
+
+        </label>
+
+
+
+        <label>
+
+            <input
+                type="radio"
+                name="clockInputMode"
+                value="random">
+
+            Zufällig
+
+        </label>
+
 
     </div>
 
-    <script src="script.js"></script>
+        </div>
 
-</body>
 
+        </div>
+
+
+
+        <div id="clockContainer"></div>
+
+
+        <div class="buttonBar">
+
+
+        <button id="startClockBtn">
+
+        Neue Aufgabe
+
+        </button>
+
+
+        <button id="checkClockBtn">
+
+        Prüfen
+
+        </button>
+
+
+        </div>
+
+
+        <div id="clockResult"></div>
+
+
+        </section>
+
+        <script src="script.js"></script>
+
+        <script src="js/TherapyClock.js"></script>
+
+        <script src="js/clockTraining.js"></script>
+
+    </body>
 </html>
