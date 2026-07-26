@@ -1,287 +1,453 @@
-body {
+/* ===========================
+   Allgemein
+=========================== */
 
-    margin: 0;
-    padding: 30px;
+*{
+    box-sizing:border-box;
+}
 
-    background: #fff4e8;
+body{
+
+    margin:0;
+    padding:30px;
+
+    background:#fff5eb;
 
     font-family:
         "Segoe UI",
         Arial,
         sans-serif;
 
-    color: #333;
+    color:#333;
 
 }
 
 
-.container {
+/* ===========================
+   Hauptcontainer
+=========================== */
 
-    max-width: 900px;
+.container{
 
-    margin: auto;
+    max-width:1200px;
 
-    background: white;
+    margin:auto;
 
-    padding: 35px;
+    background:white;
 
-    border-radius: 20px;
+    border-radius:24px;
+
+    padding:40px;
 
     box-shadow:
-        0 10px 30px rgba(0,0,0,0.08);
+        0 12px 30px rgba(0,0,0,.08);
 
 }
 
 
-h1 {
-
-    text-align: center;
-
-    color: #e87516;
-
-    margin-bottom: 35px;
-
-    font-size: 36px;
-
-}
-
-
-h2 {
-
-    color: #d65f00;
-
-}
-
-
-/* Einstellungen */
-
-.settings {
-
-    background: #fff8f1;
-
-    padding: 25px;
-
-    border-radius: 15px;
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 14px;
-
-}
-
-
-label {
-
-    font-weight: 600;
-
-}
-
-
-input[type="number"] {
-
-    width: 100px;
-
-    padding: 8px;
-
-    border-radius: 8px;
-
-    border: 1px solid #ddd;
-
-    font-size: 16px;
-
-}
-
-
-.radio-group {
-
-    display:flex;
-
-    gap:25px;
-
-    flex-wrap:wrap;
-
-}
-
-
-button {
-
-    margin-top:15px;
-
-    padding:14px 25px;
-
-    border:none;
-
-    border-radius:12px;
-
-    background:#e87516;
-
-    color:white;
-
-    font-size:17px;
-
-    font-weight:bold;
-
-    cursor:pointer;
-
-    transition:0.2s;
-
-}
-
-
-button:hover {
-
-    background:#c95f0c;
-
-    transform:translateY(-2px);
-
-}
-
-
-/* Trennlinie */
-
-hr {
-
-    margin:40px 0;
-
-    border:none;
-
-    height:2px;
-
-    background:#ffe0c2;
-
-}
-
-
-/* Zeichenbereich */
-
-.sequence {
-
-    display:flex;
-
-    justify-content:center;
-
-    gap:18px;
-
-    margin:40px 0;
-
-    flex-wrap:wrap;
-
-}
-
-
-.card {
-
-    width:70px;
-
-    height:70px;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    border-radius:15px;
-
-    font-size:32px;
-
-    font-weight:bold;
-
-    box-shadow:
-
-        0 5px 12px rgba(0,0,0,0.15);
-
-}
-
-
-/* Antworten */
-
-.answers {
-
-    margin-top:30px;
-
-}
-
-
-.answerRow {
-
-    display:flex;
-
-    align-items:center;
-
-    gap:18px;
-
-    margin-bottom:15px;
-
-    background:#fff8f1;
-
-    padding:10px;
-
-    border-radius:12px;
-
-}
-
-
-.colorBox {
-
-    width:45px;
-
-    height:45px;
-
-    border-radius:10px;
-
-}
-
-
-.answerRow input {
-
-    width:60px;
-
-    height:35px;
+/* ===========================
+   Kopfbereich
+=========================== */
+
+header{
 
     text-align:center;
 
-    font-size:22px;
+    margin-bottom:40px;
 
-    border-radius:8px;
+}
+
+h1{
+
+    margin:0;
+
+    font-size:42px;
+
+    color:#e67e22;
+
+}
+
+.subtitle{
+
+    margin-top:8px;
+
+    color:#777;
+
+    font-size:20px;
+
+}
+
+
+/* ===========================
+   Einstellungen
+=========================== */
+
+.settings{
+
+    background:#fffaf5;
+
+    border:2px solid #ffe4c7;
+
+    border-radius:20px;
+
+    padding:30px;
+
+    margin-bottom:40px;
+
+}
+
+.settings h2{
+
+    margin-top:0;
+
+    color:#d35400;
+
+}
+
+.setting{
+
+    margin-bottom:25px;
+
+}
+
+.setting label{
+
+    font-weight:600;
+
+}
+
+.setting > label{
+
+    display:block;
+
+    margin-bottom:10px;
+
+}
+
+.radioGroup{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:30px;
+
+}
+
+.radioGroup label{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    font-weight:500;
+
+}
+
+.radioGroup small{
+
+    color:#777;
+
+    margin-left:5px;
+
+}
+
+input[type="number"]{
+
+    width:120px;
+
+    padding:10px;
+
+    font-size:18px;
+
+    border-radius:10px;
 
     border:1px solid #ccc;
 
 }
 
+input[type="checkbox"]{
 
-.correct {
+    transform:scale(1.2);
 
-    background:#9bd36a !important;
+}
 
-    border-color:#6ba43c !important;
+input[type="radio"]{
+
+    transform:scale(1.15);
 
 }
 
 
-.wrong {
+/* ===========================
+   Buttons
+=========================== */
 
-    background:#ff8b7d !important;
+.buttonBar{
 
-    border-color:#d94332 !important;
+    display:flex;
 
-}
+    justify-content:center;
 
+    flex-wrap:wrap;
 
-/* Ergebnis */
-
-#result {
+    gap:20px;
 
     margin-top:35px;
+
+}
+
+button{
+
+    border:none;
+
+    border-radius:14px;
+
+    background:#e67e22;
+
+    color:white;
+
+    padding:16px 28px;
+
+    font-size:19px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+button:hover{
+
+    background:#cf6a13;
+
+    transform:translateY(-2px);
+
+}
+
+button:disabled{
+
+    opacity:.5;
+
+    cursor:default;
+
+}
+
+
+/* Buttons werden zunächst versteckt */
+
+#endMemoryBtn,
+#checkBtn,
+#newRoundBtn,
+#customTimeContainer{
+
+    display:none;
+
+}
+
+
+/* ===========================
+   Spielbereich
+=========================== */
+
+#gameArea{
+
+    text-align:center;
+
+}
+
+#phaseTitle{
+
+    color:#d35400;
+
+    margin-bottom:30px;
+
+    font-size:30px;
+
+}
+
+
+/* ===========================
+   Karten oben
+=========================== */
+
+.sequence{
+
+    display:flex;
+
+    justify-content:center;
+
+    flex-wrap:wrap;
+
+    gap:22px;
+
+    margin-bottom:45px;
+
+}
+
+.card{
+
+    width:90px;
+
+    height:90px;
+
+    border-radius:18px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:42px;
+
+    font-weight:bold;
+
+    color:white;
+
+    box-shadow:
+        0 6px 12px rgba(0,0,0,.15);
+
+}
+
+
+/* ===========================
+   Antwortkarten
+=========================== */
+
+.answers{
+
+    display:flex;
+
+    justify-content:center;
+
+    flex-wrap:wrap;
+
+    gap:24px;
+
+    margin-bottom:40px;
+
+}
+
+.answerCard{
+
+    width:105px;
+
+    background:#fffaf5;
+
+    border-radius:18px;
+
+    padding:18px;
+
+    box-shadow:
+        0 4px 10px rgba(0,0,0,.08);
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:16px;
+
+}
+
+.colorBox{
+
+    width:58px;
+
+    height:58px;
+
+    border-radius:12px;
+
+}
+
+.answerCard input{
+
+    width:60px;
+
+    height:52px;
 
     text-align:center;
 
     font-size:28px;
 
-    color:#d65f00;
+    text-transform:uppercase;
+
+    border-radius:10px;
+
+    border:2px solid #ccc;
+
+}
+
+
+/* ===========================
+   Richtig / Falsch
+=========================== */
+
+.correct{
+
+    background:#b8e994 !important;
+
+    border-color:#5ca641 !important;
+
+}
+
+.wrong{
+
+    background:#ffb5ad !important;
+
+    border-color:#d63031 !important;
+
+}
+
+
+/* ===========================
+   Ergebnis
+=========================== */
+
+#result{
+
+    margin-top:30px;
+
+    font-size:32px;
 
     font-weight:bold;
+
+    color:#d35400;
+
+}
+
+
+/* ===========================
+   Responsive
+=========================== */
+
+@media(max-width:900px){
+
+    .container{
+
+        padding:20px;
+
+    }
+
+    .card{
+
+        width:75px;
+        height:75px;
+
+        font-size:34px;
+
+    }
+
+    .answerCard{
+
+        width:90px;
+
+    }
 
 }
