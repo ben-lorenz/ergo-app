@@ -1,314 +1,846 @@
+/* ==========================================
+   Hirnleistungstraining - Merkspiel
+   Version 1.0
+
+   Teil 1:
+   - Variablen
+   - Initialisierung
+   - Einstellungen
+   - Zeichengenerierung
+   - Merkphase
+========================================== */
+
+
+// ===============================
+// Globale Variablen
+// ===============================
+
 const colors = [
-    "#e74c3c", // Rot
-    "#3498db", // Blau
-    "#2ecc71", // Grün
-    "#f1c40f", // Gelb
-    "#9b59b6", // Lila
-    "#1abc9c", // Türkis
-    "#e67e22", // Orange
-    "#34495e", // Dunkelblau
-    "#ff69b4", // Pink
-    "#7f8c8d", // Grau
-    "#16a085", // Dunkeltürkis
-    "#8e44ad", // Dunkellila
-    "#d35400", // Dunkelorange
-    "#2980b9", // Mittelblau
-    "#27ae60"  // Dunkelgrün
+
+    "#E53935", // Rot
+    "#1E88E5", // Blau
+    "#43A047", // Grün
+    "#FDD835", // Gelb
+    "#8E24AA", // Lila
+    "#00ACC1", // Türkis
+    "#FB8C00", // Orange
+    "#6D4C41", // Braun
+    "#3949AB", // Indigo
+    "#D81B60", // Pink
+    "#00897B", // Dunkeltürkis
+    "#7CB342", // Hellgrün
+    "#5E35B1", // Violett
+    "#F4511E", // Dunkelorange
+    "#546E7A"  // Blaugrau
+
 ];
 
-const timeOptions =
-document.querySelectorAll(
-    "input[name='timeMode']"
+
+let sequence = [];
+
+let displaySequence = [];
+
+let answerSequence = [];
+
+let memoryTimer = null;
+
+
+// ===============================
+// Start
+// ===============================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    init
 );
 
 
-timeOptions.forEach(option => {
 
-    option.addEventListener(
-        "change",
-        updateTimeSettings
-    );
-
-});
+function init(){
 
 
-function updateTimeSettings(){
+    document
+        .getElementById("startBtn")
+        .addEventListener(
+            "click",
+            startGame
+        );
+
+
+    document
+        .getElementById("endMemoryBtn")
+        .addEventListener(
+            "click",
+            hideSequence
+        );
+
+
+    document
+        .getElementById("checkBtn")
+        .addEventListener(
+            "click",
+            evaluateAnswers
+        );
+
+
+    document
+        .getElementById("newRoundBtn")
+        .addEventListener(
+            "click",
+            startGame
+        );
+
+
+    setupTimeOptions();
+
+
+    hideButtons();
+
+
+}
+
+
+
+// ===============================
+// Buttons verwalten
+// ===============================
+
+
+function hideButtons(){
+
+
+    document
+        .getElementById("endMemoryBtn")
+        .style.display = "none";
+
+
+    document
+        .getElementById("checkBtn")
+        .style.display = "none";
+
+
+    document
+        .getElementById("newRoundBtn")
+        .style.display = "none";
+
+
+}
+
+
+
+function showButton(id){
+
+
+    document
+        .getElementById(id)
+        .style.display = "inline-block";
+
+
+}
+
+
+
+function hideButton(id){
+
+
+    document
+        .getElementById(id)
+        .style.display = "none";
+
+
+}
+
+
+
+// ===============================
+// Merkzeit Einstellungen
+// ===============================
+
+
+function setupTimeOptions(){
+
+
+    const options =
+        document.querySelectorAll(
+            "input[name='timeMode']"
+        );
+
+
+    options.forEach(option => {
+
+
+        option.addEventListener(
+            "change",
+            updateCustomTimeVisibility
+        );
+
+
+    });
+
+
+    updateCustomTimeVisibility();
+
+
+}
+
+
+
+function updateCustomTimeVisibility(){
+
 
     const selected =
-    document.querySelector(
-        "input[name='timeMode']:checked"
-    ).value;
+        document.querySelector(
+            "input[name='timeMode']:checked"
+        ).value;
 
 
     const container =
-    document.getElementById(
-        "customTimeContainer"
-    );
+        document.getElementById(
+            "customTimeContainer"
+        );
 
 
     if(selected === "custom"){
 
-        container.style.display="block";
 
-    }else{
+        container.style.display = "block";
 
-        container.style.display="none";
+
+    } else {
+
+
+        container.style.display = "none";
+
 
     }
 
-}
-
-let sequence = [];
-
-document
-.getElementById("startBtn")
-.addEventListener("click", startGame);
-
-document
-.getElementById("checkBtn")
-.addEventListener("click", checkAnswers);
-
-document
-    .getElementById("newRoundBtn")
-    .addEventListener("click", startGame);
-
-document
-    .getElementById("endMemoryBtn")
-    .addEventListener("click",hideSequence);
-
-function showManualButton(){
-
-    document
-    .getElementById("endMemoryBtn")
-    .style.display="block";
 
 }
+
+
+
+// ===============================
+// Spiel starten
+// ===============================
+
 
 function startGame(){
 
-    document.getElementById("result").innerHTML="";
-    document.getElementById("answers").innerHTML="";
-    document.getElementById("sequence").innerHTML="";
-    document.getElementById("checkBtn").style.display="none";
-    document.getElementById("newRoundBtn").style.display = "none";
+
+    clearTimeout(memoryTimer);
+
+
+    hideButtons();
+
+
+    document
+        .getElementById("sequence")
+        .innerHTML = "";
+
+
+    document
+        .getElementById("answers")
+        .innerHTML = "";
+
+
+    document
+        .getElementById("result")
+        .innerHTML = "";
+
+
+    setPhaseTitle(
+        "Merken"
+    );
+
 
     generateSequence();
 
-    showSequence();
 
-    const timeMode =
-document.querySelector(
-    "input[name='timeMode']:checked"
-).value;
+    createDisplaySequence();
 
 
-if(timeMode === "manual"){
+    showMemorySequence();
 
-    showManualButton();
+
+    startMemoryTimer();
+
 
 }
 
-else {
+
+
+// ===============================
+// Sequenz erstellen
+// ===============================
+
+
+function generateSequence(){
+
+
+    sequence = [];
+
+
+    const count =
+        Number(
+            document.getElementById("count").value
+        );
+
+
+    const mode =
+        document.querySelector(
+            "input[name='mode']:checked"
+        ).value;
+
+
+
+    const available =
+        createCharacterPool(mode);
+
+
+
+    const shuffledColors =
+        shuffle(
+            [...colors]
+        );
+
+
+
+    for(let i = 0; i < count; i++){
+
+
+        sequence.push({
+
+            value:
+                available[
+                    Math.floor(
+                        Math.random()
+                        *
+                        available.length
+                    )
+                ],
+
+            color:
+                shuffledColors[i]
+
+        });
+
+
+    }
+
+
+}
+
+
+
+// ===============================
+// Zeichenpool
+// ===============================
+
+
+function createCharacterPool(mode){
+
+
+    const letters =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+
+    const numbers =
+        "0123456789";
+
+
+
+    if(mode === "letters"){
+
+
+        return letters.split("");
+
+
+    }
+
+
+    if(mode === "numbers"){
+
+
+        return numbers.split("");
+
+
+    }
+
+
+    return (
+        letters + numbers
+    ).split("");
+
+
+
+}
+
+
+
+// ===============================
+// Anzeige-Reihenfolge erstellen
+// ===============================
+
+
+function createDisplaySequence(){
+
+    displaySequence = [...sequence];
+
+    answerSequence = [...sequence];
+
+}
+
+
+
+// ===============================
+// Merkphase anzeigen
+// ===============================
+
+
+function showMemorySequence(){
+
+
+    const area =
+        document.getElementById(
+            "sequence"
+        );
+
+
+    area.innerHTML = "";
+
+
+
+    const displayMode =
+        document.querySelector(
+            "input[name='displayMode']:checked"
+        ).value;
+
+
+
+    displaySequence.forEach(item => {
+
+
+        const card =
+            document.createElement(
+                "div"
+            );
+
+
+        card.className =
+            "card";
+
+
+
+if(displayMode === "colors"){
+
+
+    card.style.background =
+        item.color;
+
+
+    card.style.color =
+        "white";
+
+
+}
+
+
+else if(displayMode === "hiddenColors"){
+
+
+    card.style.background =
+        "white";
+
+
+    card.style.color =
+        "#333";
+
+
+    card.style.border =
+        "2px solid #ddd";
+
+
+}
+
+
+else if(displayMode === "none"){
+
+
+    card.style.background =
+        "#f5f5f5";
+
+
+    card.style.color =
+        "#333";
+
+
+    card.style.border =
+        "2px solid #ddd";
+
+
+}
+
+
+
+        card.innerHTML =
+            item.value;
+
+
+
+        area.appendChild(card);
+
+
+
+    });
+
+
+}
+
+
+
+// ===============================
+// Timer starten
+// ===============================
+
+
+function startMemoryTimer(){
+
+
+    const mode =
+        document.querySelector(
+            "input[name='timeMode']:checked"
+        ).value;
+
+
+
+    if(mode === "manual"){
+
+
+        showButton(
+            "endMemoryBtn"
+        );
+
+
+        return;
+
+
+    }
+
 
 
     let seconds;
 
 
-    if(timeMode === "automatic"){
 
-        seconds = sequence.length;
+    if(mode === "automatic"){
 
-    }
-
-
-    if(timeMode === "custom"){
 
         seconds =
-        Number(
-            document.getElementById("time").value
+            displaySequence.length;
+
+
+    }
+
+
+
+    if(mode === "custom"){
+
+
+        seconds =
+            Number(
+                document.getElementById("time").value
+            );
+
+
+    }
+
+
+
+    memoryTimer =
+        setTimeout(
+            hideSequence,
+            seconds * 1000
         );
 
-    }
-
-
-    setTimeout(() => {
-
-        hideSequence();
-
-    }, seconds * 1000);
-
 
 }
 
-}
+/* ==========================================
+   Hirnleistungstraining - Merkspiel
+   Version 1.0
 
-function generateSequence(){
+   Teil 2:
+   - Abdeckphase
+   - Antwortkarten
+   - Eingabe
+   - Auswertung
+   - Lösung
+   - Hilfsfunktionen
+========================================== */
 
-    sequence=[];
 
-    const count =
-        Number(document.getElementById("count").value);
 
-    const mode =
-        document.querySelector("input[name='mode']:checked").value;
+// ===============================
+// Merkphase beenden / Abdecken
+// ===============================
 
-    for(let i=0;i<count;i++){
-
-        sequence.push({
-
-            value:randomCharacter(mode),
-
-            color:colors[i]
-
-        });
-
-    }
-
-}
-
-function randomCharacter(mode){
-
-    const letters="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const numbers="0123456789";
-
-    if(mode==="letters"){
-
-        return letters[Math.floor(Math.random()*letters.length)];
-
-    }
-
-    if(mode==="numbers"){
-
-        return numbers[Math.floor(Math.random()*numbers.length)];
-
-    }
-
-    const all=letters+numbers;
-
-    return all[Math.floor(Math.random()*all.length)];
-
-}
-
-function showSequence(){
-
-    const area=document.getElementById("sequence");
-
-    sequence.forEach(item=>{
-
-        const card=document.createElement("div");
-
-        card.className="card";
-
-        const colorMode =
-    document.querySelector(
-    'input[name="colorMode"]:checked'
-    ).value;
-
-    if(colorMode === "visible"){
-
-        card.style.background = item.color;
-        card.style.color = "white";
-
-    }else{
-
-        card.style.background = "white";
-        card.style.color = "black";
-        card.style.border = "2px solid #ccc";
-
-    }
-
-    card.innerHTML = item.value;
-
-        area.appendChild(card);
-
-    });
-
-}
 
 function hideSequence(){
 
-    const area=document.getElementById("sequence");
 
-    area.innerHTML="";
+    clearTimeout(memoryTimer);
 
-    sequence.forEach(item=>{
 
-        const card=document.createElement("div");
-
-        card.className="card";
-
-        card.style.background=item.color;
-
-        area.appendChild(card);
-
-    });
-
-    createInputs();
-
-    document.getElementById("endMemoryBtn")
-    .style.display="none";
-
-}
-
-function createInputs(){
-
-    const area=document.getElementById("answers");
-
-    sequence.forEach((item,index)=>{
-
-        const row=document.createElement("div");
-
-        row.className="answerRow";
-
-        row.innerHTML=`
-    <div class="colorBox"
-    style="background:${item.color}"></div>
-
-    <input 
-    maxlength="1"
-    id="answer${index}"
-    autocomplete="off">
-`;
-
-        area.appendChild(row);
-
-    });
-
-    document.getElementById("checkBtn").style.display="block";
-
-    setupInputNavigation();
-
-}
-
-function setupInputNavigation(){
-
-    const inputs =
-    document.querySelectorAll(
-        ".answerRow input"
+    hideButton(
+        "endMemoryBtn"
     );
 
 
-    inputs.forEach((input, index) => {
+    setPhaseTitle(
+        "Eingabe"
+    );
+
+
+    const area =
+        document.getElementById(
+            "sequence"
+        );
+
+
+    area.innerHTML = "";
+
+    if(
+    document
+    .getElementById("shuffleColors")
+    .checked
+    ){
+
+    answerSequence = shuffle(
+        answerSequence
+    );
+
+    }
+
+
+
+    displaySequence.forEach(item => {
+
+
+        const card =
+            document.createElement(
+                "div"
+            );
+
+
+        card.className =
+            "card";
+
+
+const displayMode =
+    document.querySelector(
+        "input[name='displayMode']:checked"
+    ).value;
+
+
+if(displayMode === "none"){
+
+
+    card.style.background =
+        "#f5f5f5";
+
+
+    card.style.color =
+        "#333";
+
+
+}
+else{
+
+
+    card.style.background =
+        item.color;
+
+
+    card.style.color =
+        "white";
+
+
+}
+
+
+        card.style.color =
+            "white";
+
+
+        card.innerHTML =
+            "";
+
+
+        area.appendChild(card);
+
+
+    });
+
+
+
+    createAnswerCards();
+
+
+    showButton(
+        "checkBtn"
+    );
+
+
+}
+
+
+
+// ===============================
+// Antwortkarten erstellen
+// ===============================
+
+
+function createAnswerCards(){
+
+    const area =
+        document.getElementById("answers");
+
+
+    area.innerHTML = "";
+
+
+    const displayMode =
+        document.querySelector(
+            "input[name='displayMode']:checked"
+        ).value;
+
+
+
+    answerSequence.forEach((item,index)=>{
+
+
+        const card =
+            document.createElement("div");
+
+
+        card.className =
+            "answerCard";
+
+
+
+        let colorHTML = "";
+
+
+
+        // Farben anzeigen bei beiden Farbmodi
+        if(
+            displayMode === "colors" ||
+            displayMode === "hiddenColors"
+        ){
+
+            colorHTML = `
+                <div
+                    class="colorBox"
+                    style="background:${item.color}">
+                </div>
+            `;
+
+        }
+
+
+
+        card.innerHTML = `
+
+            ${colorHTML}
+
+            <input
+                id="answer${index}"
+                maxlength="1"
+                autocomplete="off">
+
+        `;
+
+
+
+        area.appendChild(card);
+
+
+    });
+
+
+
+    setupInputs();
+
+}
+
+
+
+// ===============================
+// Eingabe vorbereiten
+// ===============================
+
+
+function setupInputs(){
+
+
+    const inputs =
+        document.querySelectorAll(
+            ".answerCard input"
+        );
+
+
+
+    inputs.forEach(
+        (input,index)=>{
 
 
         input.addEventListener(
             "input",
             function(){
 
-                // automatisch groß schreiben
+
                 this.value =
-                this.value.toUpperCase();
+                    this.value
+                    .toUpperCase()
+                    .replace(
+                        /[^A-Z0-9]/g,
+                        ""
+                    );
 
 
-                // zum nächsten Feld springen
+
                 if(
                     this.value.length === 1 &&
                     index < inputs.length - 1
                 ){
 
-                    inputs[index + 1].focus();
+                    inputs[index+1]
+                        .focus();
 
                 }
+
+
+            }
+        );
+
+
+
+        input.addEventListener(
+            "keydown",
+            function(event){
+
+
+                if(
+                    event.key === "Backspace" &&
+                    this.value === "" &&
+                    index > 0
+                ){
+
+                    inputs[index-1]
+                        .focus();
+
+                }
+
 
             }
         );
@@ -316,56 +848,257 @@ function setupInputNavigation(){
 
     });
 
-    inputs[0].focus();
+
+
+    if(inputs.length > 0){
+
+        inputs[0].focus();
+
+    }
+
 
 }
 
-function checkAnswers(){
 
-    let correct=0;
 
-    sequence.forEach((item,index)=>{
+// ===============================
+// Auswertung
+// ===============================
 
-        const input=document.getElementById("answer"+index);
 
-        if(input.value.toUpperCase()==item.value){
+function evaluateAnswers(){
 
-            input.classList.add("correct");
+
+    let correct = 0;
+
+
+
+    answerSequence.forEach(
+        (item,index)=>{
+
+
+        const input =
+            document.getElementById(
+                "answer" + index
+            );
+
+
+
+        const answer =
+            input.value
+            .toUpperCase();
+
+
+
+        if(answer === item.value){
+
+
+            input.classList.add(
+                "correct"
+            );
+
+
             correct++;
 
-        }else{
 
-            input.classList.add("wrong");
+
+        } else {
+
+
+            input.classList.add(
+                "wrong"
+            );
+
 
         }
 
-        const area =
-        document.getElementById("sequence");
 
-        area.innerHTML = "";
 
-        sequence.forEach(item=>{
+        input.disabled = true;
 
-            const card =
-            document.createElement("div");
 
-            card.className="card";
-
-            card.style.background=item.color;
-            card.style.color="white";
-
-            card.innerHTML=item.value;
-
-            area.appendChild(card);
-
-});
 
     });
 
-    document.getElementById("result").innerHTML=
-        `${correct} von ${sequence.length} richtig`;
 
-    document.getElementById("checkBtn").style.display = "none";
-    document.getElementById("newRoundBtn").style.display = "block";
+
+    showSolution();
+
+
+
+    document
+        .getElementById("result")
+        .innerHTML =
+
+        `${correct} von ${displaySequence.length} richtig`;
+
+
+
+    hideButton(
+        "checkBtn"
+    );
+
+
+    showButton(
+        "newRoundBtn"
+    );
+
+
+    setPhaseTitle(
+        "Auswertung"
+    );
+
+
+}
+
+
+
+// ===============================
+// Lösung anzeigen
+// ===============================
+
+
+function showSolution(){
+
+
+    const area =
+        document.getElementById(
+            "sequence"
+        );
+
+
+    area.innerHTML = "";
+
+
+
+    sequence.forEach(item=>{
+
+
+        const card =
+            document.createElement(
+                "div"
+            );
+
+
+        card.className =
+            "card";
+
+
+        card.style.background =
+            item.color;
+
+
+        card.style.color =
+            "white";
+
+
+        card.innerHTML =
+            item.value;
+
+
+        area.appendChild(card);
+
+
+
+    });
+
+
+}
+
+
+
+// ===============================
+// Neue Runde
+// ===============================
+
+
+function resetGame(){
+
+
+    document
+        .getElementById(
+            "sequence"
+        )
+        .innerHTML = "";
+
+
+
+    document
+        .getElementById(
+            "answers"
+        )
+        .innerHTML = "";
+
+
+
+    document
+        .getElementById(
+            "result"
+        )
+        .innerHTML = "";
+
+
+}
+
+
+
+// ===============================
+// Überschrift ändern
+// ===============================
+
+
+function setPhaseTitle(text){
+
+
+    document
+        .getElementById(
+            "phaseTitle"
+        )
+        .innerHTML = text;
+
+
+}
+
+
+
+// ===============================
+// Array mischen
+// ===============================
+
+
+function shuffle(array){
+
+
+    for(
+        let i = array.length - 1;
+        i > 0;
+        i--
+    ){
+
+
+        const j =
+            Math.floor(
+                Math.random()
+                *
+                (i + 1)
+            );
+
+
+
+        [
+            array[i],
+            array[j]
+        ] =
+        [
+            array[j],
+            array[i]
+        ];
+
+    }
+
+
+
+    return array;
+
 
 }
