@@ -1097,3 +1097,68 @@ function shuffle(array){
 
 
 }
+
+// ===============================
+// Navigation
+// ===============================
+
+const tabs =
+    document.querySelectorAll(".tab");
+
+
+tabs.forEach(tab=>{
+
+    tab.addEventListener(
+        "click",
+        function(){
+
+            switchPage(
+                this.dataset.page
+            );
+
+        }
+    );
+
+});
+
+
+function switchPage(pageId){
+
+    document
+        .querySelectorAll(".page")
+        .forEach(page=>{
+
+            page.classList.remove(
+                "active"
+            );
+
+        });
+
+
+    document
+        .querySelectorAll(".tab")
+        .forEach(tab=>{
+
+            tab.classList.remove(
+                "active"
+            );
+
+        });
+
+
+    document
+        .getElementById(pageId)
+        .classList.add(
+            "active"
+        );
+
+
+    document
+        .querySelector(
+            `[data-page="${pageId}"]`
+        )
+        .classList.add(
+            "active"
+        );
+
+}
