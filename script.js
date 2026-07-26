@@ -22,16 +22,11 @@ const colors = [
     "#43A047", // Grün
     "#FDD835", // Gelb
     "#8E24AA", // Lila
-    "#00ACC1", // Türkis
+    "#070808", // Schwarz
     "#FB8C00", // Orange
     "#6D4C41", // Braun
     "#3949AB", // Indigo
-    "#D81B60", // Pink
-    "#00897B", // Dunkeltürkis
-    "#7CB342", // Hellgrün
-    "#5E35B1", // Violett
-    "#F4511E", // Dunkelorange
-    "#546E7A"  // Blaugrau
+    "#546E7A", // Blaugrau
 
 ];
 
