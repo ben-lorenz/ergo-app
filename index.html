@@ -1,133 +1,274 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Therapie-App</title>
+    <title>Hirnleistungstraining</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<div class="container">
+    <div class="container">
 
-    <h1>Therapie-App</h1>
+        <header>
 
-    <div class="settings">
+            <h1>Therapie-App</h1>
 
-        <h2>Einstellungen</h2>
+        </header>
 
-        <label>Anzahl Zeichen</label>
-        <input type="number" id="count" value="6" min="3" max="15">
 
-        <label>Zeichenart</label>
+        <section class="settings">
 
-        <div class="radio-group">
-            <label><input type="radio" name="mode" value="numbers"> Zahlen</label>
-            <label><input type="radio" name="mode" value="letters"> Buchstaben</label>
-            <label><input type="radio" name="mode" value="mixed" checked> Gemischt</label>
-        </div>
+            <h2>Einstellungen</h2>
 
-        <label>Merkzeit</label>
+            <div class="setting">
 
-        <div class="radio-group">
+                <label for="count">Anzahl Zeichen</label>
+
+                <input
+                    type="number"
+                    id="count"
+                    min="3"
+                    max="15"
+                    value="6">
+
+            </div>
+
+
+            <div class="setting">
+
+                <label>Zeichenart</label>
+
+                <div class="radioGroup">
+
+                    <label>
+                        <input
+                            type="radio"
+                            name="mode"
+                            value="numbers">
+
+                        Zahlen
+                    </label>
+
+                    <label>
+                        <input
+                            type="radio"
+                            name="mode"
+                            value="letters">
+
+                        Buchstaben
+                    </label>
+
+                    <label>
+                        <input
+                            type="radio"
+                            name="mode"
+                            value="mixed"
+                            checked>
+
+                        Gemischt
+                    </label>
+
+                </div>
+
+            </div>
+
+
+
+            <label>Darstellung</label>
+
+            <div class="radioGroup">
+
+                <label>
+                    <input
+                        type="radio"
+                        name="displayMode"
+                        value="colors"
+                        checked>
+
+                    mit Farben
+                </label>
+
+
+                <label>
+                    <input
+                        type="radio"
+                        name="displayMode"
+                        value="hiddenColors">
+
+                    Farben erst beim Abdecken
+                </label>
+
+
+                <label>
+                    <input
+                        type="radio"
+                        name="displayMode"
+                        value="none">
+
+                Keine Farben
+                </label>
+
+            </div>
+
+    
+
+
+
+        <div class="setting">
 
             <label>
-                <input 
-                    type="radio" 
-                    name="timeMode" 
-                    value="automatic"
-                    checked>
-                Automatisch
-                <small>(1 Sekunde pro Zeichen)</small>
+
+                <input
+                    type="checkbox"
+                    id="shuffleColors">
+
+                Farben nach der Merkphase mischen
+
             </label>
 
-        <label>
-            <input 
-                type="radio" 
-                name="timeMode" 
-                value="manual">
-            Manuell
-            <small>(Beenden auf Knopfdruck)</small>
-        </label>
+            </div>
 
-        <label>
-            <input 
-                type="radio" 
-                name="timeMode" 
-                value="custom">
-            Benutzerdefiniert
-        </label>
+
+
+        <div class="setting">
+
+            <label>Merkzeit</label>
+
+                <div class="radioGroup">
+
+                    <label>
+
+                        <input
+                            type="radio"
+                            name="timeMode"
+                            value="automatic"
+                            checked>
+
+                        Automatisch
+                        <small>(1 Sek./Zeichen)</small>
+
+                    </label>
+
+                    <label>
+
+                        <input
+                            type="radio"
+                            name="timeMode"
+                            value="manual">
+
+                        Manuell
+
+                    </label>
+
+                    <label>
+
+                        <input
+                            type="radio"
+                            name="timeMode"
+                            value="custom">
+
+                        Benutzerdefiniert
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="setting"
+                id="customTimeContainer">
+
+                <label for="time">
+
+                    Zeit (Sekunden)
+
+                </label>
+
+                <input
+                    type="number"
+                    id="time"
+                    value="5"
+                    min="1">
+
+            </div>
+
+
+
+            <div class="buttonBar">
+
+                <button id="startBtn">
+
+                    Spiel starten
+
+                </button>
+
+                <button
+                    id="endMemoryBtn">
+
+                    Merkphase beenden
+
+                </button>
+
+                <button
+                    id="checkBtn">
+
+                    Auswerten
+
+                </button>
+
+                <button
+                    id="newRoundBtn">
+
+                    Neue Runde
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+        <section id="gameArea">
+
+            <h2 id="phaseTitle">
+
+                Bereit
+
+            </h2>
+
+
+            <div
+                id="sequence"
+                class="sequence">
+
+            </div>
+
+
+            <div
+                id="answers"
+                class="answers">
+
+            </div>
+
+
+            <div
+                id="result">
+
+            </div>
+
+        </section>
 
     </div>
 
-
-<div id="customTimeContainer" style="display:none;">
-
-    <label>
-        Sekunden:
-    </label>
-
-    <input 
-        type="number" 
-        id="time" 
-        value="5" 
-        min="1">
-
-</div>
-
-            <label>Farben während der Merkphase</label>
-
-    <div class="radio-group">
-        <label>
-            <input
-                type="radio"
-                name="colorMode"
-                value="visible"
-                checked>
-            Sichtbar
-        </label>
-
-        <label>
-            <input
-                type="radio"
-                name="colorMode"
-                value="hidden">
-            Erst beim Abdecken
-        </label>
-    </div>
-
-        <button id="startBtn">Starten</button>
-
-    </div>
-
-
-    <hr>
-
-    <div id="game">
-
-        <div id="sequence" class="sequence"></div>
-
-        <div id="answers" class="answers"></div>
-
-        <button id="checkBtn" style="display:none;">Auswerten</button>
-
-        <div id="result"></div>
-
-        <button id="newRoundBtn" style="display:none;">
-        Neue Runde
-        </button>
-
-        <button 
-        id="endMemoryBtn" 
-    style="display:none;">
-    Merkphase beenden
-    </button>
-
-    </div>
-
-</div>
-
-<script src="script.js"></script>
+    <script src="script.js"></script>
 
 </body>
+
 </html>
