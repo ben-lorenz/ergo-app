@@ -451,3 +451,166 @@ button:disabled{
     }
 
 }
+
+/* ===================================
+   Tabs
+=================================== */
+
+.tabs{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:12px;
+
+    margin-top:30px;
+
+    margin-bottom:10px;
+
+}
+
+.tab{
+
+    background:#f5e4d1;
+
+    color:#d35400;
+
+    border:none;
+
+    padding:12px 24px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-size:17px;
+
+    font-weight:600;
+
+    transition:.2s;
+
+}
+
+.tab:hover{
+
+    background:#f0cfa8;
+
+}
+
+.tab.active{
+
+    background:#e67e22;
+
+    color:white;
+
+}
+
+
+/* ===================================
+   Seiten
+=================================== */
+
+.page{
+
+    display:none;
+
+}
+
+.page.active{
+
+    display:block;
+
+}
+
+/* ===========================
+   Uhrentraining
+=========================== */
+
+
+#clockContainer{
+
+position:relative;
+
+width:520px;
+
+height:520px;
+
+margin:40px auto;
+
+}
+
+
+.therapyClock{
+
+position:absolute;
+
+left:0;
+
+top:0;
+
+}
+
+
+.clockCircle{
+
+fill:white;
+
+stroke:#e67e22;
+
+stroke-width:8;
+
+}
+
+
+
+.clockInput{
+
+position:absolute;
+
+width:50px;
+
+height:50px;
+
+border-radius:50%;
+
+border:2px solid #ccc;
+
+text-align:center;
+
+font-size:24px;
+
+font-weight:bold;
+
+z-index:2;
+
+}
+
+
+
+.clockInput.correct{
+
+background:#b8e994;
+
+border-color:green;
+
+}
+
+
+.clockInput.wrong{
+
+background:#ffb5ad;
+
+border-color:red;
+
+}
+
+.settingTitle {
+
+    display:block;
+
+    font-weight:bold;
+
+    margin-bottom:10px;
+
+}
