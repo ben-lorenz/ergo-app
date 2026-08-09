@@ -614,3 +614,323 @@ border-color:red;
     margin-bottom:10px;
 
 }
+
+.hourTick {
+
+    stroke-width:4;
+
+}
+
+
+.minuteTick {
+
+    stroke-width:1;
+
+}
+
+
+
+.clockCenter {
+
+    fill:black;
+
+}
+
+
+
+.hourHand {
+
+    stroke: black;
+    stroke-width: 8;
+    stroke-linecap: round;
+
+}
+
+
+.minuteHand {
+
+    stroke: black;
+    stroke-width: 5;
+    stroke-linecap: round;
+
+}
+
+
+.handLayer {
+
+    pointer-events: none;
+
+}
+
+.page {
+
+    display:none;
+
+}
+
+
+.page.active {
+
+    display:block;
+
+}
+
+/* Unterseiten Steuerung */
+
+.page {
+    display: none;
+}
+
+
+.page.active {
+    display: block;
+}
+
+/* ============================
+   Uhrentraining
+   ============================ */
+
+
+/* Uhr größer und mittig */
+
+#clockContainer {
+
+    width: 560px;
+    height: 560px;
+
+    margin: 30px auto;
+
+    position: relative;
+
+}
+
+
+
+
+/* SVG der Uhr */
+
+.therapyClock {
+
+    display: block;
+
+    margin: auto;
+
+}
+
+
+
+
+/* Ziffern auf der Ableseuhr */
+
+.clockNumber {
+
+    font-size: 34px;
+
+    font-weight: bold;
+
+    fill: #222;
+
+}
+
+
+
+/* Außenkreis */
+
+.clockCircle {
+
+    fill: white;
+
+    stroke: #333;
+
+    stroke-width: 4;
+
+}
+
+
+
+/* Stundenstriche */
+
+.hourTick {
+
+    stroke: #222;
+
+    stroke-width: 5;
+
+}
+
+
+
+/* Minutenstriche */
+
+.minuteTick {
+
+    stroke: #666;
+
+    stroke-width: 2;
+
+}
+
+
+
+
+/* Mittelpunkt */
+
+.clockCenter {
+
+    fill: #222;
+
+}
+
+
+
+
+
+/* Zeiger */
+
+.hourHand {
+
+    stroke: #222;
+
+    stroke-width: 12;
+
+    stroke-linecap: round;
+
+}
+
+
+
+.minuteHand {
+
+    stroke: #222;
+
+    stroke-width: 7;
+
+    stroke-linecap: round;
+
+}
+
+
+
+
+
+/* ============================
+   Uhrzeit Eingabe HH:MM
+   ============================ */
+
+
+#readingInputs {
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin: 25px auto;
+
+}
+
+
+
+
+#readingInputs input {
+
+    width: 90px;
+
+    height: 65px;
+
+    font-size: 36px;
+
+    text-align: center;
+
+    border-radius: 12px;
+
+    border: 2px solid #aaa;
+
+}
+
+
+
+
+
+.timeSeparator {
+
+    font-size: 40px;
+
+    font-weight: bold;
+
+}
+
+
+
+
+
+.clockInput {
+
+    position: absolute;
+
+    width: 55px;
+
+    height: 55px;
+
+    font-size: 28px;
+
+    text-align: center;
+
+    border-radius: 50%;
+
+    border: 2px solid #aaa;
+
+}
+
+
+
+
+
+.clockInput.correct {
+
+    background-color: #c8f7c5;
+
+}
+
+
+
+
+.clockInput.wrong {
+
+    background-color: #f7c5c5;
+
+}
+
+#settingTask {
+
+    text-align: center;
+
+    font-size: 28px;
+
+    margin: 20px auto;
+
+}
+
+
+#settingTask strong {
+
+    display: block;
+
+    font-size: 42px;
+
+    margin-top: 8px;
+
+}
+
+.setting-hit-area {
+    stroke: transparent;
+    stroke-width: 35px;
+    fill: none;
+    cursor: grab;
+    pointer-events: stroke;
+}
+
+.setting-hit-area:active {
+    cursor: grabbing;
+}
