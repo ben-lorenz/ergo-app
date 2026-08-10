@@ -1,979 +1,857 @@
+
 class TherapyClock {
 
 
-    constructor(container) {
+// =========================================================
+// KONSTRUKTOR
+// =========================================================
 
-        this.container = container;
+constructor(container) {
 
-        this.size = 520;
+    this.container = container;
 
-        this.center = this.size / 2;
+    this.size = 520;
+    this.center = this.size / 2;
+    this.radius = 210;
 
-        this.radius = 210;
+    // Einheitliche SVG-Geometrie
+    this.centerX = this.center;
+    this.centerY = this.center;
+    this.viewBoxWidth = this.size;
+    this.viewBoxHeight = this.size;
 
+    this.svg = null;
+    this.handLayer = null;
+    this.inputLayer = null;
 
-        this.svg = null;
+    this.inputs = [];
 
-        this.handLayer = null;
+    // Einstellmodus
+    this.setTimeMode = false;
+    this.userHour = 12;
+    this.userMinute = 0;
 
-        this.inputs = [];
+    this.targetHour = null;
+    this.targetMinute = null;
 
-    }
+    this.settingClickHandler = null;
+}
 
 
+// =========================================================
+// SVG HELFER
+// =========================================================
 
+createSvgElement(tag) {
 
-
-
-    // =====================================
-    // Grundaufbau der Uhr
-    // =====================================
-
-
-    createBaseClock(showNumbers = false) {
-
-
-        this.container.innerHTML = "";
-
-        this.inputs = [];
-
-
-
-        this.svg =
-            document.createElementNS(
-                "http://www.w3.org/2000/svg",
-                "svg"
-            );
-
-
-
-        this.svg.setAttribute(
-            "width",
-            this.size
-        );
-
-
-        this.svg.setAttribute(
-            "height",
-            this.size
-        );
-
-
-        this.svg.classList.add(
-            "therapyClock"
-        );
-
-
-
-        this.container.appendChild(
-            this.svg
-        );
-
-
-
-        this.drawClockCircle();
-
-
-        this.drawTicks();
-
-
-
-        if(showNumbers){
-
-            this.drawNumbers();
-
-        }
-
-
-
-        this.handLayer =
-            document.createElementNS(
-                "http://www.w3.org/2000/svg",
-                "g"
-            );
-
-
-        this.handLayer.classList.add(
-            "handLayer"
-        );
-
-
-        this.svg.appendChild(
-            this.handLayer
-        );
-
-
-
-        this.drawCenter();
-
-
-    }
-
-
-
-
-
-
-
-    // =====================================
-    // Außenkreis
-    // =====================================
-
-
-    drawClockCircle(){
-
-
-        const circle =
-            document.createElementNS(
-                "http://www.w3.org/2000/svg",
-                "circle"
-            );
-
-
-
-        circle.setAttribute(
-            "cx",
-            this.center
-        );
-
-
-        circle.setAttribute(
-            "cy",
-            this.center
-        );
-
-
-        circle.setAttribute(
-            "r",
-            this.radius
-        );
-
-
-
-        circle.classList.add(
-            "clockCircle"
-        );
-
-
-
-        this.svg.appendChild(
-            circle
-        );
-
-
-    }
-
-
-
-
-
-
-
-
-    // =====================================
-    // Minuten- und Stundenmarkierungen
-    // =====================================
-
-
-    drawTicks(){
-
-
-
-        for(
-            let i = 0;
-            i < 60;
-            i++
-        ){
-
-
-
-            const angle =
-                (
-                    i * 6 - 90
-                )
-                *
-                Math.PI
-                /
-                180;
-
-
-
-
-            const outer =
-                this.radius - 10;
-
-
-
-            const inner =
-                i % 5 === 0
-                ?
-                this.radius - 35
-                :
-                this.radius - 22;
-
-
-
-
-            const line =
-                document.createElementNS(
-                    "http://www.w3.org/2000/svg",
-                    "line"
-                );
-
-
-
-            line.setAttribute(
-                "x1",
-                this.center +
-                Math.cos(angle)
-                *
-                inner
-            );
-
-
-            line.setAttribute(
-                "y1",
-                this.center +
-                Math.sin(angle)
-                *
-                inner
-            );
-
-
-
-            line.setAttribute(
-                "x2",
-                this.center +
-                Math.cos(angle)
-                *
-                outer
-            );
-
-
-            line.setAttribute(
-                "y2",
-                this.center +
-                Math.sin(angle)
-                *
-                outer
-            );
-
-
-
-            if(
-                i % 5 === 0
-            ){
-
-                line.classList.add(
-                    "hourTick"
-                );
-
-            }
-            else{
-
-
-                line.classList.add(
-                    "minuteTick"
-                );
-
-
-            }
-
-
-
-            this.svg.appendChild(
-                line
-            );
-
-
-
-        }
-
-
-    }
-
-
-
-
-
-
-
-
-    // =====================================
-    // Zahlen 1-12
-    // =====================================
-
-
-    drawNumbers(){
-
-
-
-        for(
-            let hour = 1;
-            hour <= 12;
-            hour++
-        ){
-
-
-
-            const angle =
-                (
-                    hour * 30 - 90
-                )
-                *
-                Math.PI
-                /
-                180;
-
-
-
-
-            const x =
-                this.center +
-                Math.cos(angle)
-                *
-                (
-                    this.radius - 60
-                );
-
-
-
-            const y =
-                this.center +
-                Math.sin(angle)
-                *
-                (
-                    this.radius - 60
-                );
-
-
-
-
-
-            const text =
-                document.createElementNS(
-                    "http://www.w3.org/2000/svg",
-                    "text"
-                );
-
-
-
-            text.setAttribute(
-                "x",
-                x
-            );
-
-
-
-            text.setAttribute(
-                "y",
-                y
-            );
-
-
-
-            text.setAttribute(
-                "text-anchor",
-                "middle"
-            );
-
-
-
-            text.setAttribute(
-                "dominant-baseline",
-                "middle"
-            );
-
-
-
-            text.textContent =
-                hour;
-
-
-
-            text.classList.add(
-                "clockNumber"
-            );
-
-
-
-            this.svg.appendChild(
-                text
-            );
-
-
-
-        }
-
-
-
-    }
-
-
-
-
-
-
-
-
-    // =====================================
-    // Mittelpunkt
-    // =====================================
-
-
-    drawCenter(){
-
-
-
-        const center =
-            document.createElementNS(
-                "http://www.w3.org/2000/svg",
-                "circle"
-            );
-
-
-
-        center.setAttribute(
-            "cx",
-            this.center
-        );
-
-
-
-        center.setAttribute(
-            "cy",
-            this.center
-        );
-
-
-
-        center.setAttribute(
-            "r",
-            8
-        );
-
-
-
-        center.classList.add(
-            "clockCenter"
-        );
-
-
-
-        this.svg.appendChild(
-            center
-        );
-
-
-
-    }
-        // =====================================
-    // Beschriftungsmodus
-    // =====================================
-
-
-    renderLabelMode(settings = []) {
-
-
-        this.createBaseClock(false);
-
-
-
-        for(
-            let hour = 1;
-            hour <= 12;
-            hour++
-        ){
-
-
-
-            const angle =
-                (
-                    hour * 30 - 90
-                )
-                *
-                Math.PI
-                /
-                180;
-
-
-
-            const x =
-                this.center +
-                Math.cos(angle)
-                *
-                (
-                    this.radius - 45
-                );
-
-
-
-            const y =
-                this.center +
-                Math.sin(angle)
-                *
-                (
-                    this.radius - 45
-                );
-
-
-
-
-            const input =
-                document.createElement(
-                    "input"
-                );
-
-
-
-            input.className =
-                "clockInput";
-
-
-
-            input.dataset.hour =
-                hour;
-
-
-
-            input.dataset.length =
-                hour >= 10 ? 2 : 1;
-
-
-
-            input.maxLength =
-                hour >= 10 ? 2 : 1;
-
-
-
-            input.style.left =
-                (
-                    x - 25
-                )
-                +
-                "px";
-
-
-
-            input.style.top =
-                (
-                    y - 25
-                )
-                +
-                "px";
-
-
-
-
-            if(
-                settings.includes(hour)
-            ){
-
-                input.value =
-                    hour;
-
-
-                input.disabled =
-                    true;
-
-            }
-
-
-
-
-            this.inputs.push(
-                input
-            );
-
-
-
-            this.container.appendChild(
-                input
-            );
-
-
-
-        }
-
-
-    }
-
-
-
-
-
-
-
-    // =====================================
-    // Ablesemodus
-    // =====================================
-
-
-    renderReadingMode(){
-
-
-        this.createBaseClock(true);
-
-
-    }
-
-
-
-
-
-
-
-
-    // =====================================
-    // Uhrzeit anzeigen
-    // =====================================
-
-
-    showTime(hour, minute){
-
-
-
-        if(
-            !this.handLayer
-        ){
-
-            return;
-
-        }
-
-
-
-
-        this.handLayer.innerHTML =
-            "";
-
-
-
-
-        const hourAngle =
-            (
-                hour * 30
-                +
-                minute * 0.5
-                -
-                90
-            )
-            *
-            Math.PI
-            /
-            180;
-
-
-
-        const minuteAngle =
-            (
-                minute * 6
-                -
-                90
-            )
-            *
-            Math.PI
-            /
-            180;
-
-
-
-
-
-        this.drawHand(
-            hourAngle,
-            this.radius * 0.55,
-            "hourHand"
-        );
-
-
-
-        this.drawHand(
-            minuteAngle,
-            this.radius * 0.8,
-            "minuteHand"
-        );
-
-
-
-        // Mittelpunkt nochmal darüber zeichnen
-
-        this.drawHandCenter();
-
-
-
-    }
-
-
-
-
-
-
-
-
-    // =====================================
-    // Einzelnen Zeiger zeichnen
-    // =====================================
-
-
-    drawHand(
-        angle,
-        length,
-        className
-    ){
-
-
-
-        const line =
-            document.createElementNS(
-                "http://www.w3.org/2000/svg",
-                "line"
-            );
-
-
-
-
-        line.setAttribute(
-            "x1",
-            this.center
-        );
-
-
-
-        line.setAttribute(
-            "y1",
-            this.center
-        );
-
-
-
-        line.setAttribute(
-            "x2",
-            this.center +
-            Math.cos(angle)
-            *
-            length
-        );
-
-
-
-        line.setAttribute(
-            "y2",
-            this.center +
-            Math.sin(angle)
-            *
-            length
-        );
-
-
-
-        line.classList.add(
-            className
-        );
-
-
-
-        this.handLayer.appendChild(
-            line
-        );
-
-
-
-    }
-
-
-
-
-
-
-
-
-    drawHandCenter(){
-
-
-
-        const dot =
-            document.createElementNS(
-                "http://www.w3.org/2000/svg",
-                "circle"
-            );
-
-
-
-        dot.setAttribute(
-            "cx",
-            this.center
-        );
-
-
-
-        dot.setAttribute(
-            "cy",
-            this.center
-        );
-
-
-
-        dot.setAttribute(
-            "r",
-            8
-        );
-
-
-
-        dot.classList.add(
-            "clockCenter"
-        );
-
-
-
-        this.handLayer.appendChild(
-            dot
-        );
-
-
-    }
-
-
-
-
-
-
-
-
-    // =====================================
-    // Beschriftung prüfen
-    // =====================================
-
-
-    check(){
-
-
-
-        let correct = 0;
-
-        let total = 0;
-
-
-
-        this.inputs.forEach(
-            input => {
-
-
-
-                if(
-                    input.disabled
-                ){
-
-                    return;
-
-                }
-
-
-
-                total++;
-
-
-
-                if(
-                    Number(input.value)
-                    ===
-                    Number(input.dataset.hour)
-                ){
-
-
-
-                    correct++;
-
-
-
-                    input.classList.add(
-                        "correct"
-                    );
-
-
-
-                    input.classList.remove(
-                        "wrong"
-                    );
-
-
-
-                }
-                else{
-
-
-
-                    input.classList.add(
-                        "wrong"
-                    );
-
-
-
-                    input.classList.remove(
-                        "correct"
-                    );
-
-
-
-                }
-
-
-
-            }
-        );
-
-
-
-        return {
-
-            correct,
-
-            total
-
-        };
-
-
-    }
-
-    /*
-=========================================================
-UHRZEIT EINSTELLEN
-=========================================================
-*/
-
-/*
- * Zielzeit für den Einstellmodus setzen.
- *
- * Beispiel:
- * setTargetTime(14, 35)
- */
-
-setTargetTime(hour, minute) {
-
-    this.targetHour = hour;
-    this.targetMinute = minute;
-
-    this.setTimeMode = true;
+    return document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        tag
+    );
 
 }
 
 
+// =========================================================
+// GRUNDAUFBAU DER UHR
+// =========================================================
 
-/*
-=========================================================
-EINSTELLUHR ZEICHNEN
-=========================================================
-*/
+createBaseClock(showNumbers = false) {
+
+    // Alten Inhalt vollständig entfernen
+    this.container.innerHTML = "";
+
+    this.inputs = [];
+
+    this.svg = this.createSvgElement("svg");
+
+    this.svg.setAttribute(
+        "width",
+        this.size
+    );
+
+    this.svg.setAttribute(
+        "height",
+        this.size
+    );
+
+    this.svg.setAttribute(
+        "viewBox",
+        `0 0 ${this.size} ${this.size}`
+    );
+
+    this.svg.classList.add(
+        "therapyClock"
+    );
+
+    this.container.appendChild(
+        this.svg
+    );
+
+
+    // -----------------------------------------------------
+    // Zifferblatt
+    // -----------------------------------------------------
+
+    this.drawClockCircle();
+
+    this.drawTicks();
+
+    if (showNumbers) {
+        this.drawNumbers();
+    }
+
+
+    // -----------------------------------------------------
+    // Zeiger-Layer
+    // -----------------------------------------------------
+
+    this.handLayer = this.createSvgElement("g");
+
+    this.handLayer.classList.add(
+        "handLayer"
+    );
+
+    this.svg.appendChild(
+        this.handLayer
+    );
+
+
+    // -----------------------------------------------------
+    // Mittelpunkt
+    // -----------------------------------------------------
+
+    this.drawCenter();
+
+
+    // -----------------------------------------------------
+    // Overlay für HTML-Eingabefelder
+    // -----------------------------------------------------
+
+    this.createInputLayer();
+
+}
+
+
+// =========================================================
+// INPUT LAYER
+// =========================================================
+
+createInputLayer() {
+
+    this.inputLayer =
+        document.createElement("div");
+
+    this.inputLayer.className =
+        "clockInputLayer";
+
+    this.inputLayer.style.position =
+        "absolute";
+
+    this.inputLayer.style.left =
+        "0";
+
+    this.inputLayer.style.top =
+        "0";
+
+    this.inputLayer.style.width =
+        `${this.size}px`;
+
+    this.inputLayer.style.height =
+        `${this.size}px`;
+
+    this.inputLayer.style.pointerEvents =
+        "none";
+
+    /*
+     * Wichtig:
+     * Der Container muss als Bezugspunkt
+     * für die absolute Positionierung dienen.
+     */
+    if (
+        getComputedStyle(this.container).position ===
+        "static"
+    ) {
+
+        this.container.style.position =
+            "relative";
+
+    }
+
+    this.container.appendChild(
+        this.inputLayer
+    );
+
+}
+
+
+// =========================================================
+// AUSSENKREIS
+// =========================================================
+
+drawClockCircle() {
+
+    const circle =
+        this.createSvgElement("circle");
+
+    circle.setAttribute(
+        "cx",
+        this.center
+    );
+
+    circle.setAttribute(
+        "cy",
+        this.center
+    );
+
+    circle.setAttribute(
+        "r",
+        this.radius
+    );
+
+    circle.classList.add(
+        "clockCircle"
+    );
+
+    this.svg.appendChild(
+        circle
+    );
+
+}
+
+
+// =========================================================
+// MINUTEN- UND STUNDENMARKIERUNGEN
+// =========================================================
+
+drawTicks() {
+
+    for (
+        let i = 0;
+        i < 60;
+        i++
+    ) {
+
+        const angle =
+            (
+                i * 6 - 90
+            )
+            *
+            Math.PI
+            /
+            180;
+
+
+        const outer =
+            this.radius - 10;
+
+
+        const inner =
+            i % 5 === 0
+                ? this.radius - 35
+                : this.radius - 22;
+
+
+        const line =
+            this.createSvgElement("line");
+
+
+        line.setAttribute(
+            "x1",
+            this.center +
+            Math.cos(angle) * inner
+        );
+
+        line.setAttribute(
+            "y1",
+            this.center +
+            Math.sin(angle) * inner
+        );
+
+        line.setAttribute(
+            "x2",
+            this.center +
+            Math.cos(angle) * outer
+        );
+
+        line.setAttribute(
+            "y2",
+            this.center +
+            Math.sin(angle) * outer
+        );
+
+
+        line.classList.add(
+            i % 5 === 0
+                ? "hourTick"
+                : "minuteTick"
+        );
+
+
+        this.svg.appendChild(
+            line
+        );
+
+    }
+
+}
+
+
+// =========================================================
+// ZAHLEN 1-12
+// =========================================================
+
+drawNumbers() {
+
+    for (
+        let hour = 1;
+        hour <= 12;
+        hour++
+    ) {
+
+        const angle =
+            (
+                hour * 30 - 90
+            )
+            *
+            Math.PI
+            /
+            180;
+
+
+        const numberRadius =
+            this.radius - 60;
+
+
+        const x =
+            this.center +
+            Math.cos(angle) *
+            numberRadius;
+
+
+        const y =
+            this.center +
+            Math.sin(angle) *
+            numberRadius;
+
+
+        const text =
+            this.createSvgElement("text");
+
+
+        text.setAttribute(
+            "x",
+            x
+        );
+
+        text.setAttribute(
+            "y",
+            y
+        );
+
+        text.setAttribute(
+            "text-anchor",
+            "middle"
+        );
+
+        text.setAttribute(
+            "dominant-baseline",
+            "middle"
+        );
+
+        text.textContent =
+            hour;
+
+
+        text.classList.add(
+            "clockNumber"
+        );
+
+
+        this.svg.appendChild(
+            text
+        );
+
+    }
+
+}
+
+
+// =========================================================
+// MITTELPUNKT
+// =========================================================
+
+drawCenter() {
+
+    const center =
+        this.createSvgElement("circle");
+
+    center.setAttribute(
+        "cx",
+        this.center
+    );
+
+    center.setAttribute(
+        "cy",
+        this.center
+    );
+
+    center.setAttribute(
+        "r",
+        8
+    );
+
+    center.classList.add(
+        "clockCenter"
+    );
+
+    this.svg.appendChild(
+        center
+    );
+
+}
+
+
+// =========================================================
+// BESCHRIFTUNGSMODUS
+// =========================================================
+
+renderLabelMode(settings = []) {
+
+    /*
+     * Ganz wichtig:
+     * Die Uhr wird zuerst vollständig aufgebaut.
+     */
+    this.createBaseClock(false);
+
+
+    /*
+     * Alte Einstellzeiger deaktivieren.
+     */
+    this.setTimeMode = false;
+
+
+    for (
+        let hour = 1;
+        hour <= 12;
+        hour++
+    ) {
+
+        const angle =
+            (
+                hour * 30 - 90
+            )
+            *
+            Math.PI
+            /
+            180;
+
+
+        const inputRadius =
+            this.radius - 45;
+
+
+        const x =
+            this.center +
+            Math.cos(angle) *
+            inputRadius;
+
+
+        const y =
+            this.center +
+            Math.sin(angle) *
+            inputRadius;
+
+
+        const input =
+            document.createElement("input");
+
+
+        input.className =
+            "clockInput";
+
+
+        input.type =
+            "text";
+
+
+        input.inputMode =
+            "numeric";
+
+
+        input.dataset.hour =
+            hour;
+
+
+        input.dataset.length =
+            hour >= 10 ? 2 : 1;
+
+
+        input.maxLength =
+            hour >= 10 ? 2 : 1;
+
+
+        /*
+         * Input-Größe:
+         * Wir gehen davon aus, dass die CSS-Datei
+         * ungefähr 50x50px vorsieht.
+         */
+        const inputSize = 50;
+
+
+        input.style.position =
+            "absolute";
+
+        input.style.left =
+            `${x - inputSize / 2}px`;
+
+        input.style.top =
+            `${y - inputSize / 2}px`;
+
+        input.style.width =
+            `${inputSize}px`;
+
+        input.style.height =
+            `${inputSize}px`;
+
+        input.style.pointerEvents =
+            "auto";
+
+
+        // -------------------------------------------------
+        // Vorgegebene Beschriftung
+        // -------------------------------------------------
+
+        if (
+            settings.includes(hour)
+        ) {
+
+            input.value =
+                hour;
+
+            input.disabled =
+                true;
+
+            input.dataset.given =
+                "true";
+
+        }
+        else {
+
+            input.dataset.given =
+                "false";
+
+        }
+
+
+        this.inputs.push(
+            input
+        );
+
+
+        this.inputLayer.appendChild(
+            input
+        );
+
+    }
+
+}
+
+
+// =========================================================
+// ABLESEMODUS
+// =========================================================
+
+renderReadingMode() {
+
+    this.setTimeMode = false;
+
+    this.createBaseClock(true);
+
+}
+
+
+// =========================================================
+// UHRZEIT ANZEIGEN
+// =========================================================
+
+showTime(hour, minute) {
+
+    if (!this.handLayer) {
+        return;
+    }
+
+
+    this.handLayer.innerHTML = "";
+
+
+    const hourAngle =
+        (
+            hour * 30
+            +
+            minute * 0.5
+            -
+            90
+        )
+        *
+        Math.PI
+        /
+        180;
+
+
+    const minuteAngle =
+        (
+            minute * 6
+            -
+            90
+        )
+        *
+        Math.PI
+        /
+        180;
+
+
+    this.drawHand(
+        hourAngle,
+        this.radius * 0.55,
+        "hourHand"
+    );
+
+
+    this.drawHand(
+        minuteAngle,
+        this.radius * 0.8,
+        "minuteHand"
+    );
+
+
+    this.drawHandCenter();
+
+}
+
+
+// =========================================================
+// EINZELNEN ZEIGER ZEICHNEN
+// =========================================================
+
+drawHand(
+    angle,
+    length,
+    className
+) {
+
+    const line =
+        this.createSvgElement("line");
+
+
+    line.setAttribute(
+        "x1",
+        this.center
+    );
+
+    line.setAttribute(
+        "y1",
+        this.center
+    );
+
+    line.setAttribute(
+        "x2",
+        this.center +
+        Math.cos(angle) * length
+    );
+
+    line.setAttribute(
+        "y2",
+        this.center +
+        Math.sin(angle) * length
+    );
+
+
+    line.classList.add(
+        className
+    );
+
+
+    this.handLayer.appendChild(
+        line
+    );
+
+}
+
+
+// =========================================================
+// MITTELPUNKT FÜR ZEIGER
+// =========================================================
+
+drawHandCenter() {
+
+    const dot =
+        this.createSvgElement("circle");
+
+
+    dot.setAttribute(
+        "cx",
+        this.center
+    );
+
+    dot.setAttribute(
+        "cy",
+        this.center
+    );
+
+    dot.setAttribute(
+        "r",
+        8
+    );
+
+
+    dot.classList.add(
+        "clockCenter"
+    );
+
+
+    this.handLayer.appendChild(
+        dot
+    );
+
+}
+
+
+// =========================================================
+// BESCHRIFTUNG PRÜFEN
+// =========================================================
+
+check() {
+
+    let correct = 0;
+    let total = 0;
+
+
+    this.inputs.forEach(
+        input => {
+
+            /*
+             * WICHTIG:
+             *
+             * "disabled" darf hier NICHT verwendet werden.
+             *
+             * Ein freies Feld kann durch die Eingabelogik
+             * momentan disabled sein, ohne vorgegeben zu sein.
+             *
+             * Nur dataset.given === "true" bedeutet:
+             * Dieses Feld war von Anfang an vorgegeben.
+             */
+            if (
+                input.dataset.given ===
+                "true"
+            ) {
+
+                return;
+
+            }
+
+
+            /*
+             * Jedes nicht vorgegebene Feld wird gewertet.
+             *
+             * Dabei spielt es keine Rolle, ob es momentan
+             * aktiv oder disabled ist.
+             */
+            total++;
+
+
+            const expected =
+                Number(
+                    input.dataset.hour
+                );
+
+
+            const value =
+                Number(
+                    input.value
+                );
+
+
+            if (
+                value === expected
+            ) {
+
+                correct++;
+
+
+                input.classList.add(
+                    "correct"
+                );
+
+                input.classList.remove(
+                    "wrong"
+                );
+
+            }
+            else {
+
+                input.classList.add(
+                    "wrong"
+                );
+
+                input.classList.remove(
+                    "correct"
+                );
+
+            }
+
+        }
+    );
+
+
+    return {
+        correct,
+        total
+    };
+
+}
+
+
+// =========================================================
+// ZIELZEIT FÜR EINSTELLMODUS
+// =========================================================
+
+setTargetTime(hour, minute) {
+
+    this.targetHour =
+        hour;
+
+    this.targetMinute =
+        minute;
+
+    this.setTimeMode =
+        true;
+
+}
+
+
+// =========================================================
+// EINSTELLUHR ZEICHNEN
+// =========================================================
 
 renderSettingMode() {
 
-    this.setTimeMode = true;
+    this.setTimeMode =
+        true;
 
-    this.userHour = 12;
-    this.userMinute = 0;
+    this.userHour =
+        12;
 
-    this.renderClock();
+    this.userMinute =
+        0;
+
+
+    /*
+     * Wir verwenden dieselbe Uhrbasis
+     * wie in den anderen Modi.
+     */
+    this.createBaseClock(true);
+
 
     this.drawSettingHands();
 
@@ -982,58 +860,36 @@ renderSettingMode() {
 }
 
 
-
-/*
-=========================================================
-ZEIGER FÜR EINSTELLMODUS
-=========================================================
-*/
+// =========================================================
+// ZEIGER FÜR EINSTELLMODUS
+// =========================================================
 
 drawSettingHands() {
 
-    const svg =
-        this.container.querySelector("svg");
-
-    if (!svg) {
-
+    if (!this.svg) {
         return;
-
     }
 
 
-
     /*
-     * Alte Einstellzeiger entfernen
+     * Alte Einstellzeiger entfernen.
      */
-
-    svg
+    this.svg
         .querySelectorAll(".setting-hand")
-        .forEach(hand => hand.remove());
-
-
-
-    /*
-     * Mittelpunkt der Uhr
-     */
-
-    const centerX =
-        this.centerX;
-
-    const centerY =
-        this.centerY;
-
+        .forEach(
+            hand => hand.remove()
+        );
 
 
     /*
      * Minutenzeiger
      */
-
     const minuteAngle =
         this.userMinute * 6;
 
+
     const minuteLength =
         this.radius * 0.72;
-
 
 
     const minuteEnd =
@@ -1043,23 +899,18 @@ drawSettingHands() {
         );
 
 
-
     const minuteHand =
-        document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "line"
-        );
-
+        this.createSvgElement("line");
 
 
     minuteHand.setAttribute(
         "x1",
-        centerX
+        this.centerX
     );
 
     minuteHand.setAttribute(
         "y1",
-        centerY
+        this.centerY
     );
 
     minuteHand.setAttribute(
@@ -1073,24 +924,20 @@ drawSettingHands() {
     );
 
 
-
     minuteHand.classList.add(
         "setting-hand",
         "minute-hand"
     );
 
 
-
-    svg.appendChild(
+    this.svg.appendChild(
         minuteHand
     );
-
 
 
     /*
      * Stundenzeiger
      */
-
     const hourAngle =
         (
             (this.userHour % 12) * 30
@@ -1101,10 +948,8 @@ drawSettingHands() {
         );
 
 
-
     const hourLength =
         this.radius * 0.52;
-
 
 
     const hourEnd =
@@ -1114,23 +959,18 @@ drawSettingHands() {
         );
 
 
-
     const hourHand =
-        document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "line"
-        );
-
+        this.createSvgElement("line");
 
 
     hourHand.setAttribute(
         "x1",
-        centerX
+        this.centerX
     );
 
     hourHand.setAttribute(
         "y1",
-        centerY
+        this.centerY
     );
 
     hourHand.setAttribute(
@@ -1144,36 +984,61 @@ drawSettingHands() {
     );
 
 
-
     hourHand.classList.add(
         "setting-hand",
         "hour-hand"
     );
 
 
-
-    svg.appendChild(
+    this.svg.appendChild(
         hourHand
+    );
+
+
+    /*
+     * Mittelpunkt über den Zeigern.
+     */
+    const center =
+        this.createSvgElement("circle");
+
+
+    center.setAttribute(
+        "cx",
+        this.centerX
+    );
+
+    center.setAttribute(
+        "cy",
+        this.centerY
+    );
+
+    center.setAttribute(
+        "r",
+        8
+    );
+
+
+    center.classList.add(
+        "clockCenter",
+        "setting-center"
+    );
+
+
+    this.svg.appendChild(
+        center
     );
 
 }
 
 
-
-/*
-=========================================================
-PUNKT AUF UHR BERECHNEN
-=========================================================
-*/
+// =========================================================
+// PUNKT AUF UHR BERECHNEN
+// =========================================================
 
 getPointOnClock(
     angle,
     length
 ) {
-
-    /*
-     * SVG beginnt oben bei -90 Grad.
-     */
 
     const radians =
         (
@@ -1185,55 +1050,43 @@ getPointOnClock(
         180;
 
 
-
     return {
 
         x:
-            this.centerX
-            +
-            Math.cos(radians) * length,
+            this.centerX +
+            Math.cos(radians) *
+            length,
 
         y:
-            this.centerY
-            +
-            Math.sin(radians) * length
+            this.centerY +
+            Math.sin(radians) *
+            length
 
     };
 
 }
 
 
-
-/*
-=========================================================
-EINGABE FÜR EINSTELLUHR
-=========================================================
-*/
+// =========================================================
+// EINGABE FÜR EINSTELLUHR
+// =========================================================
 
 setupSettingInteraction() {
 
-    const svg =
-        this.container.querySelector("svg");
-
-
-
-    if (!svg) {
-
+    if (!this.svg) {
         return;
-
     }
 
 
-
     /*
-     * Alten Listener entfernen,
-     * damit beim Erzeugen einer neuen Aufgabe
-     * nicht mehrere Listener übereinanderliegen.
+     * Listener der alten SVG-Instanz entfernen,
+     * falls vorhanden.
      */
+    if (
+        this.settingClickHandler
+    ) {
 
-    if (this.settingClickHandler) {
-
-        svg.removeEventListener(
+        this.svg.removeEventListener(
             "click",
             this.settingClickHandler
         );
@@ -1241,9 +1094,8 @@ setupSettingInteraction() {
     }
 
 
-
     this.settingClickHandler =
-        (event) => {
+        event => {
 
             this.handleClockClick(
                 event
@@ -1252,8 +1104,7 @@ setupSettingInteraction() {
         };
 
 
-
-    svg.addEventListener(
+    this.svg.addEventListener(
         "click",
         this.settingClickHandler
     );
@@ -1261,47 +1112,27 @@ setupSettingInteraction() {
 }
 
 
-
-/*
-=========================================================
-KLICK AUF UHR VERARBEITEN
-=========================================================
-*/
+// =========================================================
+// KLICK AUF UHR VERARBEITEN
+// =========================================================
 
 handleClockClick(event) {
 
-    const svg =
-        event.currentTarget;
-
+    if (!this.svg) {
+        return;
+    }
 
 
     const rect =
-        svg.getBoundingClientRect();
-
-
-
-    const x =
-        event.clientX
-        -
-        rect.left;
-
-
-
-    const y =
-        event.clientY
-        -
-        rect.top;
-
+        this.svg.getBoundingClientRect();
 
 
     /*
-     * SVG-Koordinaten berücksichtigen.
+     * Tatsächliche SVG-Größe berücksichtigen.
      */
-
     const scaleX =
         this.viewBoxWidth /
         rect.width;
-
 
 
     const scaleY =
@@ -1309,34 +1140,35 @@ handleClockClick(event) {
         rect.height;
 
 
+    const x =
+        (
+            event.clientX -
+            rect.left
+        )
+        *
+        scaleX;
 
-    const svgX =
-        x * scaleX;
 
-
-
-    const svgY =
-        y * scaleY;
-
+    const y =
+        (
+            event.clientY -
+            rect.top
+        )
+        *
+        scaleY;
 
 
     const dx =
-        svgX - this.centerX;
-
+        x - this.centerX;
 
 
     const dy =
-        svgY - this.centerY;
-
+        y - this.centerY;
 
 
     /*
-     * Winkel bestimmen.
-     *
-     * atan2 liefert den Winkel
-     * ab 3-Uhr-Position.
+     * Winkel ab 3-Uhr-Position.
      */
-
     let angle =
         Math.atan2(
             dy,
@@ -1348,69 +1180,49 @@ handleClockClick(event) {
         Math.PI;
 
 
-
     /*
-     * Auf 12 Uhr als 0 Grad drehen.
+     * 12 Uhr = 0 Grad.
      */
-
     angle =
         angle + 90;
 
 
-
     if (angle < 0) {
-
         angle += 360;
-
     }
-
 
 
     if (angle >= 360) {
-
         angle -= 360;
-
     }
 
 
-
     /*
-     * Auf die nächste Minute runden.
+     * Auf nächste Minute runden.
      */
-
     let minute =
         Math.round(
             angle / 6
         );
 
 
-
     if (minute === 60) {
-
         minute = 0;
-
     }
 
 
-
     /*
-     * Stunde aus dem bisherigen
-     * Stundenwert beibehalten.
+     * Stunde zunächst beibehalten.
      */
-
     let hour =
         this.userHour;
 
 
-
     /*
-     * Wenn wir über 12 Uhr springen,
-     * Stunde entsprechend anpassen.
+     * Übergang über 12 Uhr erkennen.
      */
-
     if (
-        this.userMinute > 45
-        &&
+        this.userMinute > 45 &&
         minute < 15
     ) {
 
@@ -1419,10 +1231,8 @@ handleClockClick(event) {
     }
 
 
-
     if (
-        this.userMinute < 15
-        &&
+        this.userMinute < 15 &&
         minute > 45
     ) {
 
@@ -1431,31 +1241,21 @@ handleClockClick(event) {
     }
 
 
-
     if (hour > 12) {
-
         hour = 1;
-
     }
-
 
 
     if (hour < 1) {
-
         hour = 12;
-
     }
-
 
 
     this.userHour =
         hour;
 
-
-
     this.userMinute =
         minute;
-
 
 
     this.drawSettingHands();
@@ -1463,12 +1263,9 @@ handleClockClick(event) {
 }
 
 
-
-/*
-=========================================================
-AKTUELLE EINSTELLUNG AUSLESEN
-=========================================================
-*/
+// =========================================================
+// AKTUELLE EINSTELLUNG AUSLESEN
+// =========================================================
 
 getSetTime() {
 
@@ -1484,6 +1281,5 @@ getSetTime() {
 
 }
 
-
-
 }
+
