@@ -1,4 +1,3 @@
-
 /*
 =========================================================
 clockTraining.js
@@ -38,6 +37,12 @@ let currentClockMode = "label";
 
 let currentInputMode = "clockwise";
 
+let clockFeedback = null;
+
+let secondReadingActive = false;
+
+console.log("clockTraining.js geladen");
+
 
 
 // =========================================================
@@ -63,6 +68,7 @@ function initClockTraining() {
     }
 
 
+
     /*
     -----------------------------------------------------
     TherapyClock erzeugen
@@ -83,10 +89,19 @@ function initClockTraining() {
     }
 
 
+
     therapyClock =
         new TherapyClock(
             container
         );
+
+
+
+    clockFeedback =
+        new ClockFeedback(
+            "clockResult"
+        );
+
 
 
     /*
@@ -116,20 +131,10 @@ function initClockTraining() {
     }
 
 
-    /*
-    -----------------------------------------------------
-    Ereignisse
-    -----------------------------------------------------
-    */
 
     setupClockEventListeners();
 
 
-    /*
-    -----------------------------------------------------
-    Aktuellen Modus anzeigen
-    -----------------------------------------------------
-    */
 
     switchClockMode(
         getSelectedClockMode()
@@ -139,11 +144,14 @@ function initClockTraining() {
 
 
 
+
+
 // =========================================================
 // EVENT LISTENER
 // =========================================================
 
 function setupClockEventListeners() {
+
 
     /*
     -----------------------------------------------------
@@ -252,6 +260,42 @@ function setupClockEventListeners() {
 
     /*
     -----------------------------------------------------
+    Zweite Lösung Checkbox
+    -----------------------------------------------------
+    */
+
+    const secondSolutionCheckbox =
+        document.getElementById(
+            "showSecondReadingSolution"
+        );
+
+
+    if (secondSolutionCheckbox) {
+
+        console.log("Checkbox gefunden:");
+
+        secondSolutionCheckbox.addEventListener(
+            "change",
+            () => {
+
+                console.log("Checkbox checked");
+
+                secondReadingActive =
+                    secondSolutionCheckbox.checked;
+
+                console.log("Zweite Lösung aktiv");
+
+                updateSecondReadingBox();
+
+            }
+        );
+
+    }
+
+
+
+    /*
+    -----------------------------------------------------
     Einstell-Schwierigkeit
     -----------------------------------------------------
     */
@@ -288,11 +332,6 @@ function setupClockEventListeners() {
     /*
     -----------------------------------------------------
     Eingabeverhalten Beschriftung
-    -----------------------------------------------------
-
-    clockwise = im Uhrzeigersinn
-    random    = zufällige Reihenfolge
-    manual    = freie Eingabe
     -----------------------------------------------------
     */
 
@@ -378,8 +417,6 @@ function setupClockEventListeners() {
 
 }
 
-
-
 // =========================================================
 // AKTUELLEN MODUS ERMITTELN
 // =========================================================
@@ -405,6 +442,8 @@ function getSelectedClockMode() {
 
 
 
+
+
 // =========================================================
 // MODUS WECHSELN
 // =========================================================
@@ -417,11 +456,6 @@ function switchClockMode(
         mode;
 
 
-    /*
-    -----------------------------------------------------
-    Alte Zustände zurücksetzen
-    -----------------------------------------------------
-    */
 
     clearClockResult();
 
@@ -430,6 +464,7 @@ function switchClockMode(
     hideSettingTask();
 
     clearClockInputs();
+
 
 
     if (settingMode) {
@@ -447,21 +482,17 @@ function switchClockMode(
 
 
 
-    /*
-    -----------------------------------------------------
-    Einstellungsbereiche
-    -----------------------------------------------------
-    */
-
     const labelSettings =
         document.getElementById(
             "labelSettings"
         );
 
+
     const readingSettings =
         document.getElementById(
             "readingSettings"
         );
+
 
     const settingSettings =
         document.getElementById(
@@ -501,15 +532,11 @@ function switchClockMode(
 
 
 
-    /*
-    -----------------------------------------------------
-    Modus starten
-    -----------------------------------------------------
-    */
-
     startCurrentClockMode();
 
 }
+
+
 
 
 
@@ -520,6 +547,7 @@ function switchClockMode(
 function startCurrentClockMode() {
 
     clearClockResult();
+
 
 
     if (
@@ -534,6 +562,7 @@ function startCurrentClockMode() {
     }
 
 
+
     if (
         currentClockMode ===
         "reading"
@@ -544,6 +573,7 @@ function startCurrentClockMode() {
         return;
 
     }
+
 
 
     if (
@@ -561,6 +591,8 @@ function startCurrentClockMode() {
 
 
 
+
+
 // =========================================================
 // BESCHRIFTUNGSMODUS
 // =========================================================
@@ -574,37 +606,17 @@ function startLabelMode() {
     clearClockResult();
 
 
-    /*
-    -----------------------------------------------------
-    Schwierigkeitsstufe bestimmen
-    -----------------------------------------------------
-    */
 
     const preset =
         getLabelDifficulty();
 
 
-    /*
-    -----------------------------------------------------
-    Uhr neu zeichnen
-    -----------------------------------------------------
-    */
 
     therapyClock.renderLabelMode(
         preset
     );
 
 
-    /*
-    -----------------------------------------------------
-    Eingabeverhalten festlegen
-    -----------------------------------------------------
-
-    clockwise = im Uhrzeigersinn
-    random    = zufällige Reihenfolge
-    manual    = freie Eingabe
-    -----------------------------------------------------
-    */
 
     switch (
         currentInputMode
@@ -617,11 +629,13 @@ function startLabelMode() {
             break;
 
 
+
         case "random":
 
             setupRandomInput();
 
             break;
+
 
 
         case "manual":
@@ -635,6 +649,8 @@ function startLabelMode() {
     }
 
 }
+
+
 
 
 
@@ -656,6 +672,7 @@ function getLabelDifficulty() {
             : "easy";
 
 
+
     switch (
         difficulty
     ) {
@@ -670,6 +687,7 @@ function getLabelDifficulty() {
             ];
 
 
+
         case "medium":
 
             return [
@@ -677,9 +695,11 @@ function getLabelDifficulty() {
             ];
 
 
+
         case "hard":
 
             return [];
+
 
 
         default:
@@ -691,6 +711,8 @@ function getLabelDifficulty() {
     }
 
 }
+
+
 
 
 
@@ -708,6 +730,7 @@ function startReadingMode() {
 
     showReadingInputs();
 
+    updateSecondReadingBox();
 
     if (!therapyClock) {
 
@@ -716,11 +739,14 @@ function startReadingMode() {
     }
 
 
+
     therapyClock.renderReadingMode();
+
 
 
     const time =
         generateReadingTime();
+
 
 
     therapyClock.showTime(
@@ -729,8 +755,44 @@ function startReadingMode() {
     );
 
 
+
     window.currentReadingTime =
         time;
+
+
+
+    const fields = [
+
+        "answerHour",
+
+        "answerMinute",
+
+        "answerHour2",
+
+        "answerMinute2"
+
+    ];
+
+
+
+    fields.forEach(
+        id => {
+
+            const field =
+                document.getElementById(
+                    id
+                );
+
+
+            if(field){
+
+                field.value = "";
+
+            }
+
+        }
+    );
+
 
 
     const hourInput =
@@ -738,27 +800,8 @@ function startReadingMode() {
             "answerHour"
         );
 
-    const minuteInput =
-        document.getElementById(
-            "answerMinute"
-        );
 
-
-    if (hourInput) {
-
-        hourInput.value = "";
-
-    }
-
-
-    if (minuteInput) {
-
-        minuteInput.value = "";
-
-    }
-
-
-    if (hourInput) {
+    if(hourInput){
 
         hourInput.focus();
 
@@ -766,7 +809,42 @@ function startReadingMode() {
 
 }
 
+function updateSecondReadingBox(){
 
+    console.log(
+        "updateSecondReadingBox gestartet"
+    );
+
+
+    const box =
+        document.getElementById(
+            "secondReadingInputs"
+        );
+
+
+    console.log(
+        "Box gefunden:",
+        box
+    );
+
+
+    if(!box){
+        return;
+    }
+
+
+    box.style.display =
+        secondReadingActive
+            ? "flex"
+            : "none";
+
+
+    console.log(
+        "Display gesetzt:",
+        box.style.display
+    );
+
+}
 
 // =========================================================
 // ZEIT FÜR ABLESEN ERZEUGEN
@@ -778,24 +856,22 @@ function generateReadingTime() {
         getReadingDifficulty();
 
 
+
     let hour =
         Math.floor(
             Math.random() * 12
         ) + 1;
 
 
+
     let minute = 0;
+
 
 
     switch (
         difficulty
     ) {
 
-        /*
-        -------------------------------------------------
-        Volle Stunden
-        -------------------------------------------------
-        */
 
         case "easy":
 
@@ -804,12 +880,6 @@ function generateReadingTime() {
             break;
 
 
-
-        /*
-        -------------------------------------------------
-        15 Minuten
-        -------------------------------------------------
-        */
 
         case "medium": {
 
@@ -834,12 +904,6 @@ function generateReadingTime() {
         }
 
 
-
-        /*
-        -------------------------------------------------
-        5 Minuten
-        -------------------------------------------------
-        */
 
         case "hard": {
 
@@ -873,12 +937,6 @@ function generateReadingTime() {
 
 
 
-        /*
-        -------------------------------------------------
-        Jede Minute
-        -------------------------------------------------
-        */
-
         case "everyMinute":
 
             minute =
@@ -897,6 +955,7 @@ function generateReadingTime() {
     }
 
 
+
     return {
 
         hour,
@@ -905,6 +964,8 @@ function generateReadingTime() {
     };
 
 }
+
+
 
 
 
@@ -928,109 +989,109 @@ function getReadingDifficulty() {
 
 
 
+
+
 // =========================================================
 // ABLESEN PRÜFEN
 // =========================================================
 
-function checkReading() {
-
-    const hourInput =
-        document.getElementById(
-            "answerHour"
-        );
-
-
-    const minuteInput =
-        document.getElementById(
-            "answerMinute"
-        );
-
-
-    if (
-        !hourInput ||
-        !minuteInput
-    ) {
-
-        return;
-
-    }
-
-
-    const enteredHour =
-        Number(
-            hourInput.value
-        );
-
-
-    const enteredMinute =
-        Number(
-            minuteInput.value
-        );
-
+function checkReading(){
 
     const target =
         window.currentReadingTime;
 
 
-    if (!target) {
-
+    if(!target){
         return;
-
     }
 
 
-    /*
-    Zwei gültige Lösungen:
-    z.B. 03:25 und 15:25
-    */
-
-    const solution1Hour =
-        target.hour;
-
-
-    const solution2Hour =
-        target.hour + 12;
-
-
-    const correct =
-        enteredMinute === target.minute &&
-        (
-            enteredHour === solution1Hour ||
-            enteredHour === solution2Hour
+    const hour1 =
+        Number(
+            document.getElementById(
+                "answerHour"
+            ).value
         );
 
 
-    const result =
-        document.getElementById(
-            "clockResult"
+    const minute1 =
+        Number(
+            document.getElementById(
+                "answerMinute"
+            ).value
         );
 
 
-    if (!result) {
+    const solution1 =
+        hour1 === target.hour &&
+        minute1 === target.minute;
 
-        return;
+
+
+    const hour2 =
+        Number(
+            document.getElementById(
+                "answerHour2"
+            )?.value
+        );
+
+
+    const minute2 =
+        Number(
+            document.getElementById(
+                "answerMinute2"
+            )?.value
+        );
+
+
+    const solution2 =
+        hour2 === target.hour + 12 &&
+        minute2 === target.minute;
+
+
+
+    let correct = false;
+
+
+    if(secondReadingActive){
+
+        correct =
+            solution1 &&
+            solution2;
+
+    }
+
+    else{
+
+        correct =
+            solution1 ||
+            solution2;
 
     }
 
 
-    result.className = "";
 
+    if(correct){
 
-    if (correct) {
-
-        result.textContent =
-            "✓ Richtig";
+        clockFeedback.showSuccess(
+            "✓ Richtig",
+            ""
+        );
 
     }
 
-    else {
+    else{
 
-        result.textContent =
-            "✗ Falsch";
+        clockFeedback.showError(
+            "✗ Falsch",
+            ""
+        );
 
     }
 
 }
+
+
 
 
 
@@ -1049,6 +1110,7 @@ function startSettingMode() {
     clearClockInputs();
 
 
+
     if (!settingMode) {
 
         console.error(
@@ -1060,8 +1122,10 @@ function startSettingMode() {
     }
 
 
+
     const difficulty =
         getSettingDifficulty();
+
 
 
     if (
@@ -1078,11 +1142,14 @@ function startSettingMode() {
     }
 
 
+
     settingMode.start(
         difficulty
     );
 
 }
+
+
 
 
 
@@ -1098,19 +1165,23 @@ function getSettingDifficulty() {
         );
 
 
+
     const difficulty =
         selected
             ? selected.value
             : "easy";
 
 
+
     switch (
         difficulty
     ) {
 
+
         case "easy":
 
             return "hours";
+
 
 
         case "medium":
@@ -1118,14 +1189,17 @@ function getSettingDifficulty() {
             return "quarter";
 
 
+
         case "hard":
 
             return "five";
 
 
+
         case "everyMinute":
 
             return "everyMinute";
+
 
 
         default:
@@ -1136,13 +1210,12 @@ function getSettingDifficulty() {
 
 }
 
-
-
 // =========================================================
 // AKTUELLEN MODUS PRÜFEN
 // =========================================================
 
 function checkCurrentClockMode() {
+
 
     if (
         currentClockMode ===
@@ -1156,6 +1229,7 @@ function checkCurrentClockMode() {
     }
 
 
+
     if (
         currentClockMode ===
         "reading"
@@ -1166,6 +1240,7 @@ function checkCurrentClockMode() {
         return;
 
     }
+
 
 
     if (
@@ -1183,11 +1258,14 @@ function checkCurrentClockMode() {
 
 
 
+
+
 // =========================================================
 // BESCHRIFTUNG PRÜFEN
 // =========================================================
 
 function checkLabel() {
+
 
     if (
         !therapyClock ||
@@ -1200,34 +1278,24 @@ function checkLabel() {
     }
 
 
+
     const result =
         therapyClock.check();
 
 
-    const resultElement =
-        document.getElementById(
-            "clockResult"
-        );
 
+    clockFeedback.showInfo(
 
-    if (!resultElement) {
-
-        return;
-
-    }
-
-
-    resultElement.textContent =
         result.correct +
         " von " +
         result.total +
-        " richtig.";
+        " richtig."
 
-
-    resultElement.className =
-        "";
+    );
 
 }
+
+
 
 
 
@@ -1237,6 +1305,7 @@ function checkLabel() {
 
 function checkSetting() {
 
+
     if (!settingMode) {
 
         return;
@@ -1244,60 +1313,45 @@ function checkSetting() {
     }
 
 
+
     const result =
         settingMode.check();
 
 
-    const resultElement =
-        document.getElementById(
-            "clockResult"
+
+    if(result.correct){
+
+
+        clockFeedback.showSuccess(
+            "✓ Richtig",
+            ""
         );
 
 
-    if (!resultElement) {
-
-        return;
-
     }
-
-
-    /*
-    Ergebnis zurücksetzen
-    */
-
-    resultElement.textContent = "";
-
-    resultElement.className = "";
-
-
-    /*
-    Richtig
-    */
-
-    if (result.correct) {
-
-        resultElement.textContent =
-            "✓ Richtig";
-
-    }
-
-
-    /*
-    Falsch
-    */
 
     else {
 
-        resultElement.textContent =
-            "✗ Falsch – eingestellt war " +
+
+        clockFeedback.showError(
+
+            "✗ Falsch",
+
+            "Eingestellt war " +
             formatTime(
                 result.userHour,
                 result.userMinute
-            );
+            )
+
+        );
+
 
     }
 
+
 }
+
+
 
 
 
@@ -1307,21 +1361,25 @@ function checkSetting() {
 
 function showReadingInputs() {
 
+
     const inputs =
         document.getElementById(
             "readingInputs"
         );
 
 
-    if (inputs) {
+
+    if(inputs){
+
 
         inputs.style.display =
             "flex";
 
+
     }
 
-}
 
+}
 
 
 // =========================================================
@@ -1330,20 +1388,27 @@ function showReadingInputs() {
 
 function hideReadingInputs() {
 
+
     const inputs =
         document.getElementById(
             "readingInputs"
         );
 
 
-    if (inputs) {
+
+    if(inputs){
+
 
         inputs.style.display =
             "none";
 
+
     }
 
+
 }
+
+
 
 
 
@@ -1353,20 +1418,22 @@ function hideReadingInputs() {
 
 function clearClockInputs() {
 
-    if (
+
+    if(
         !therapyClock ||
         !therapyClock.inputs
-    ) {
+    ){
 
         return;
 
     }
 
 
+
     therapyClock.inputs.forEach(
         input => {
 
-            if (input) {
+            if(input){
 
                 input.remove();
 
@@ -1376,9 +1443,13 @@ function clearClockInputs() {
     );
 
 
+
     therapyClock.inputs = [];
 
+
 }
+
+
 
 
 
@@ -1388,20 +1459,25 @@ function clearClockInputs() {
 
 function hideSettingTask() {
 
+
     const task =
         document.getElementById(
             "settingTask"
         );
 
 
-    if (task) {
+
+    if(task){
 
         task.style.display =
             "none";
 
     }
 
+
 }
+
+
 
 
 
@@ -1411,24 +1487,17 @@ function hideSettingTask() {
 
 function clearClockResult() {
 
-    const result =
-        document.getElementById(
-            "clockResult"
-        );
 
+    if(clockFeedback){
 
-    if (!result) {
-
-        return;
+        clockFeedback.clear();
 
     }
 
 
-    result.textContent = "";
-
-    result.className = "";
-
 }
+
+
 
 
 
@@ -1441,17 +1510,29 @@ function formatTime(
     minute
 ) {
 
+
     return (
+
         String(hour)
-            .padStart(2, "0")
+            .padStart(2,"0")
+
         +
+
         ":"
+
         +
+
         String(minute)
-            .padStart(2, "0")
+            .padStart(2,"0")
+
     );
 
+
 }
+
+
+
+
 
 
 
@@ -1460,34 +1541,17 @@ function formatTime(
 // =========================================================
 
 
+function isInputComplete(
+    input
+) {
 
-// =========================================================
-// PRÜFEN, OB EIN FELD VOLLSTÄNDIG AUSGEFÜLLT IST
-// =========================================================
-//
-// Entscheidend für 10, 11 und 12:
-//
-// Das input-Event kommt bereits nach der ersten
-// eingegebenen Ziffer.
-//
-// Deshalb darf bei diesen Feldern erst weitergeschaltet
-// werden, wenn die erforderliche Anzahl an Ziffern
-// erreicht wurde.
-//
-// 1-9  -> Länge 1
-// 10-12 -> Länge 2
-//
-// dataset.length wird bereits von TherapyClock.js
-// korrekt gesetzt.
-// =========================================================
 
-function isInputComplete(input) {
-
-    if (!input) {
+    if(!input){
 
         return false;
 
     }
+
 
 
     const requiredLength =
@@ -1496,17 +1560,14 @@ function isInputComplete(input) {
         );
 
 
-    /*
-    Falls aus irgendeinem Grund keine Länge
-    vorhanden ist, sicherheitshalber die
-    tatsächliche erwartete Länge aus der
-    Stundenzahl ableiten.
-    */
 
     const fallbackLength =
-        Number(input.dataset.hour) >= 10
+        Number(
+            input.dataset.hour
+        ) >= 10
             ? 2
             : 1;
+
 
 
     const length =
@@ -1518,29 +1579,16 @@ function isInputComplete(input) {
             : fallbackLength;
 
 
-    /*
-    Nur tatsächliche Ziffern berücksichtigen.
-    */
 
-    const value =
-        input.value.trim();
+    return (
+        input.value.trim() !== "" &&
+        input.value.length >= length
+    );
 
-
-    if (value === "") {
-
-        return false;
-
-    }
-
-
-    /*
-    Ein Feld ist erst fertig, wenn die
-    benötigte Anzahl Zeichen vorhanden ist.
-    */
-
-    return value.length >= length;
 
 }
+
+
 
 
 
@@ -1548,36 +1596,30 @@ function isInputComplete(input) {
 // NUR EIN EINGABEFELD AKTIVIEREN
 // =========================================================
 
-function enableOnly(index) {
+function enableOnly(
+    index
+) {
 
-    if (
+
+    if(
         !therapyClock ||
         !therapyClock.inputs
-    ) {
+    ){
 
         return;
 
     }
 
 
+
     therapyClock.inputs.forEach(
-        (input, i) => {
+        (input,i)=>{
 
-            /*
-            -------------------------------------------------
-            WICHTIG:
 
-            Nur dataset.given entscheidet darüber,
-            ob ein Feld vorgegeben ist.
-
-            disabled bedeutet lediglich:
-            Dieses Feld ist momentan nicht aktiv.
-            -------------------------------------------------
-            */
-
-            if (
-                input.dataset.given === "true"
-            ) {
+            if(
+                input.dataset.given ===
+                "true"
+            ){
 
                 input.disabled = true;
 
@@ -1586,45 +1628,42 @@ function enableOnly(index) {
             }
 
 
-            if (
-                i === index
-            ) {
 
-                input.disabled = false;
+            input.disabled =
+                i !== index;
+
+
+
+            if(
+                i === index
+            ){
 
                 input.style.display =
                     "block";
 
             }
 
-            else {
-
-                input.disabled = true;
-
-            }
 
         }
     );
 
 
-    /*
-    Fokus auf das aktive Feld setzen.
-    */
 
-    const activeInput =
+    const active =
         therapyClock.inputs[index];
 
 
-    if (
-        activeInput &&
-        activeInput.dataset.given !== "true"
-    ) {
 
-        activeInput.focus();
+    if(active){
+
+        active.focus();
 
     }
 
+
 }
+
+
 
 
 
@@ -1632,170 +1671,108 @@ function enableOnly(index) {
 // MANUELL
 // =========================================================
 
-function setupManualInput() {
+function setupManualInput(){
 
-    if (
+
+    if(
         !therapyClock ||
         !therapyClock.inputs
-    ) {
+    ){
 
         return;
 
     }
 
 
+
     therapyClock.inputs.forEach(
-        input => {
+        input=>{
 
-            /*
-            -------------------------------------------------
-            Vorgegebene Zahlen bleiben gesperrt.
 
-            Nur dataset.given entscheidet.
-            -------------------------------------------------
-            */
-
-            if (
-                input.dataset.given === "true"
-            ) {
+            if(
+                input.dataset.given ===
+                "true"
+            ){
 
                 input.disabled = true;
 
-                return;
+            }
+
+            else {
+
+
+                input.disabled = false;
+
+                input.style.display =
+                    "block";
+
 
             }
 
 
-            /*
-            -------------------------------------------------
-            Freie Felder sind wirklich frei.
-            -------------------------------------------------
-            */
-
-            input.disabled = false;
-
-            input.style.display =
-                "block";
-
         }
     );
+
 
 }
 
 
 
+
+
 // =========================================================
-// EINGABE UHRZEIGERSINN
-//
-// Die freien Felder werden in der Reihenfolge
-// 1 -> 2 -> 3 -> ... freigegeben.
-//
-// Vorgegebene Zahlen werden übersprungen.
-//
-// WICHTIG:
-// Ein temporär gesperrtes Feld ist NICHT
-// automatisch ein vorgegebenes Feld.
-//
-// ZUSÄTZLICH:
-// Bei 10, 11 und 12 wird erst nach der
-// zweiten Ziffer weitergeschaltet.
+// UHRZEIGERSINN
 // =========================================================
 
-function setupClockwiseInput() {
+function setupClockwiseInput(){
 
-    if (
+
+    if(
         !therapyClock ||
         !therapyClock.inputs
-    ) {
+    ){
 
         return;
 
     }
 
 
-    /*
-    -----------------------------------------------------
-    Alte Listener entfernen
-    -----------------------------------------------------
-    */
-
-    therapyClock.inputs.forEach(
-        input => {
-
-            const oldHandler =
-                input._clockwiseHandler;
-
-
-            if (oldHandler) {
-
-                input.removeEventListener(
-                    "input",
-                    oldHandler
-                );
-
-            }
-
-        }
-    );
-
-
-    /*
-    -----------------------------------------------------
-    Alle wirklich freien Felder sammeln.
-    -----------------------------------------------------
-
-    NICHT anhand von disabled!
-
-    Ausschließlich dataset.given entscheidet.
-    -----------------------------------------------------
-    */
 
     const freeIndices = [];
 
 
-    therapyClock.inputs.forEach(
-        (input, index) => {
 
-            if (
+    therapyClock.inputs.forEach(
+        (input,index)=>{
+
+
+            if(
                 input.dataset.given !==
                 "true"
-            ) {
+            ){
 
-                freeIndices.push(
-                    index
-                );
+                freeIndices.push(index);
 
             }
+
 
         }
     );
 
 
-    /*
-    -----------------------------------------------------
-    Keine freien Felder
-    -----------------------------------------------------
-    */
 
-    if (
+    if(
         freeIndices.length === 0
-    ) {
+    ){
 
         return;
 
     }
 
 
-    /*
-    -----------------------------------------------------
-    Alle Felder zunächst sperren.
-
-    Dadurch wird kein Feld zu "given".
-    -----------------------------------------------------
-    */
 
     therapyClock.inputs.forEach(
-        input => {
+        input=>{
 
             input.disabled = true;
 
@@ -1803,167 +1780,79 @@ function setupClockwiseInput() {
     );
 
 
-    /*
-    -----------------------------------------------------
-    Erstes freies Feld aktivieren.
-    -----------------------------------------------------
-    */
 
     enableOnly(
         freeIndices[0]
     );
 
 
-    /*
-    -----------------------------------------------------
-    Handler für alle Felder
-    -----------------------------------------------------
-    */
 
     therapyClock.inputs.forEach(
-        (input, index) => {
+        (input,index)=>{
 
-            const handler =
-                () => {
 
-                    /*
-                    -------------------------------------------------
-                    Nur reagieren, wenn tatsächlich etwas
-                    eingegeben wurde.
-                    -------------------------------------------------
-                    */
+            input.oninput =
+                ()=>{
 
-                    if (
-                        input.value.trim() === ""
-                    ) {
+
+                    if(
+                        !isInputComplete(input)
+                    ){
 
                         return;
 
                     }
 
 
-                    /*
-                    -------------------------------------------------
-                    NEU:
 
-                    Bei 10, 11 und 12 darf nach der ersten
-                    Ziffer NOCH NICHT weitergeschaltet werden.
-
-                    Bei 1-9 reicht eine Ziffer.
-                    -------------------------------------------------
-                    */
-
-                    if (
-                        !isInputComplete(
-                            input
-                        )
-                    ) {
-
-                        return;
-
-                    }
-
-
-                    /*
-                    -------------------------------------------------
-                    Das aktuelle Feld bleibt ausdrücklich
-                    ein freies Feld.
-
-                    Wir setzen hier NICHT:
-                        dataset.given = "true"
-                    -------------------------------------------------
-                    */
-
-
-                    /*
-                    -------------------------------------------------
-                    Position des aktuellen Feldes
-                    in der Liste der freien Felder.
-                    -------------------------------------------------
-                    */
-
-                    const currentPosition =
+                    const position =
                         freeIndices.indexOf(
                             index
                         );
 
 
-                    /*
-                    Vorgegebene Felder ignorieren.
-                    */
 
-                    if (
-                        currentPosition === -1
-                    ) {
+                    if(position === -1){
 
                         return;
 
                     }
 
 
-                    /*
-                    -------------------------------------------------
-                    Nächstes freies Feld.
-                    -------------------------------------------------
-                    */
 
-                    const nextPosition =
-                        currentPosition + 1;
+                    const next =
+                        position + 1;
 
 
-                    /*
-                    -------------------------------------------------
-                    Noch ein freies Feld vorhanden.
-                    -------------------------------------------------
-                    */
 
-                    if (
-                        nextPosition <
+                    if(
+                        next <
                         freeIndices.length
-                    ) {
+                    ){
 
                         enableOnly(
-                            freeIndices[
-                                nextPosition
-                            ]
+                            freeIndices[next]
                         );
 
                     }
 
-                    else {
-
-                        /*
-                        -------------------------------------------------
-                        Alle freien Felder wurden ausgefüllt.
-
-                        Das aktuelle Feld bleibt:
-                            dataset.given = "false"
-
-                        Es wird NICHT nachträglich als
-                        vorgegeben markiert.
-                        -------------------------------------------------
-                        */
+                    else{
 
                         input.blur();
 
                     }
 
+
                 };
 
-
-            input._clockwiseHandler =
-                handler;
-
-
-            input.addEventListener(
-                "input",
-                handler
-            );
 
         }
     );
 
+
 }
+
+
 
 
 
@@ -1971,111 +1860,70 @@ function setupClockwiseInput() {
 // ZUFÄLLIGE REIHENFOLGE
 // =========================================================
 
-function setupRandomInput() {
+function setupRandomInput(){
 
-    if (
+
+    if(
         !therapyClock ||
         !therapyClock.inputs
-    ) {
+    ){
 
         return;
 
     }
 
 
-    /*
-    -----------------------------------------------------
-    Alte Zufalls-Handler entfernen
-    -----------------------------------------------------
-    */
-
-    therapyClock.inputs.forEach(
-        input => {
-
-            const oldHandler =
-                input._randomHandler;
-
-
-            if (oldHandler) {
-
-                input.removeEventListener(
-                    "input",
-                    oldHandler
-                );
-
-            }
-
-        }
-    );
-
-
-    /*
-    -----------------------------------------------------
-    Indizes aller frei auszufüllenden
-    Felder sammeln.
-    -----------------------------------------------------
-    */
 
     const indices = [];
 
 
-    therapyClock.inputs.forEach(
-        (input, index) => {
 
-            if (
+    therapyClock.inputs.forEach(
+        (input,index)=>{
+
+
+            if(
                 input.dataset.given !==
                 "true"
-            ) {
+            ){
 
-                indices.push(
-                    index
-                );
+                indices.push(index);
 
             }
+
 
         }
     );
 
 
-    /*
-    -----------------------------------------------------
-    Fisher-Yates Shuffle
-    -----------------------------------------------------
-    */
 
-    for (
-        let i = indices.length - 1;
-        i > 0;
+    for(
+        let i = indices.length-1;
+        i>0;
         i--
-    ) {
+    ){
 
-        const randomIndex =
+        const random =
             Math.floor(
-                Math.random() *
-                (i + 1)
+                Math.random()*(i+1)
             );
 
 
         [
             indices[i],
-            indices[randomIndex]
+            indices[random]
         ] =
         [
-            indices[randomIndex],
+            indices[random],
             indices[i]
         ];
 
     }
 
 
-    /*
-    -----------------------------------------------------
-    Alle Felder zunächst sperren.
-    -----------------------------------------------------
-    */
 
     therapyClock.inputs.forEach(
-        input => {
+        input=>{
 
             input.disabled = true;
 
@@ -2083,157 +1931,74 @@ function setupRandomInput() {
     );
 
 
-    /*
-    -----------------------------------------------------
-    Keine freien Felder vorhanden.
-    -----------------------------------------------------
-    */
-
-    if (
-        indices.length === 0
-    ) {
-
-        return;
-
-    }
-
-
-    /*
-    -----------------------------------------------------
-    Zufälliges erstes Feld aktivieren.
-    -----------------------------------------------------
-    */
 
     enableOnly(
         indices[0]
     );
 
 
-    /*
-    -----------------------------------------------------
-    Eingabe-Handler erstellen.
-    -----------------------------------------------------
-    */
 
     therapyClock.inputs.forEach(
-        (input, index) => {
+        (input,index)=>{
 
-            const handler =
-                () => {
 
-                    /*
-                    -------------------------------------------------
-                    Leere Eingabe ignorieren.
-                    -------------------------------------------------
-                    */
+            input.oninput =
+                ()=>{
 
-                    if (
-                        input.value.trim() === ""
-                    ) {
+
+                    if(
+                        !isInputComplete(input)
+                    ){
 
                         return;
 
                     }
 
 
-                    /*
-                    -------------------------------------------------
-                    WICHTIG:
 
-                    Auch im Zufallsmodus erst weitergehen,
-                    wenn das komplette Feld ausgefüllt ist.
-
-                    Dadurch bleiben 10, 11 und 12 nach der
-                    ersten Ziffer noch aktiv.
-                    -------------------------------------------------
-                    */
-
-                    if (
-                        !isInputComplete(
-                            input
-                        )
-                    ) {
-
-                        return;
-
-                    }
-
-
-                    /*
-                    -------------------------------------------------
-                    Position des aktuellen Feldes in der
-                    Zufallsreihenfolge.
-                    -------------------------------------------------
-                    */
-
-                    const currentPosition =
+                    const pos =
                         indices.indexOf(
                             index
                         );
 
 
-                    /*
-                    Vorgegebenes Feld ignorieren.
-                    */
 
-                    if (
-                        currentPosition === -1
-                    ) {
+                    if(pos === -1){
 
                         return;
 
                     }
 
 
-                    /*
-                    -------------------------------------------------
-                    Nächstes zufälliges Feld.
-                    -------------------------------------------------
-                    */
 
-                    const nextPosition =
-                        currentPosition + 1;
+                    const next =
+                        pos+1;
 
 
-                    if (
-                        nextPosition <
+
+                    if(
+                        next <
                         indices.length
-                    ) {
+                    ){
 
                         enableOnly(
-                            indices[
-                                nextPosition
-                            ]
+                            indices[next]
                         );
 
                     }
 
-                    else {
-
-                        /*
-                        -------------------------------------------------
-                        Alle Felder erledigt.
-                        -------------------------------------------------
-                        */
+                    else{
 
                         input.blur();
 
                     }
 
+
                 };
 
-
-            input._randomHandler =
-                handler;
-
-
-            input.addEventListener(
-                "input",
-                handler
-            );
 
         }
     );
 
-}
 
+}
