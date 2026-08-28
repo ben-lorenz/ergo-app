@@ -595,6 +595,15 @@
 
                     </label>
 
+                    <label>
+                        <input 
+                            type="checkbox"
+                            id="showSecondReadingSolution"
+                        >
+
+                        Zweite Lösung abfragen
+                    </label>
+
                 </div>
 
             </div>
@@ -687,32 +696,70 @@
              ABLESEFELDER
              ================================================= -->
 
-        <div
-            id="readingInputs"
-            style="display:none;"
+<!-- ================================================= 
+     ABLESEFELDER 
+     ================================================= -->
+
+<div id="readingInputContainer">
+
+    <div 
+        id="readingInputs"
+        class="readingBox"
+        style="display:none;"
+    >
+
+        <input 
+            type="text"
+            id="answerHour"
+            maxlength="2"
+            placeholder="HH"
+            inputmode="numeric"
         >
 
-            <input
-                type="text"
-                id="answerHour"
-                maxlength="2"
-                placeholder="HH"
-                inputmode="numeric"
-            >
+        <span class="timeSeparator">
+            :
+        </span>
 
-            <span class="timeSeparator">
-                :
-            </span>
+        <input 
+            type="text"
+            id="answerMinute"
+            maxlength="2"
+            placeholder="MM"
+            inputmode="numeric"
+        >
 
-            <input
-                type="text"
-                id="answerMinute"
-                maxlength="2"
-                placeholder="MM"
-                inputmode="numeric"
-            >
+    </div>
 
-        </div>
+
+    <div 
+        id="secondReadingInputs"
+        class="readingBox"
+        style="display:none;"
+    >
+
+        <input 
+            type="text"
+            id="answerHour2"
+            maxlength="2"
+            placeholder="HH"
+            inputmode="numeric"
+        >
+
+        <span class="timeSeparator">
+            :
+        </span>
+
+        <input 
+            type="text"
+            id="answerMinute2"
+            maxlength="2"
+            placeholder="MM"
+            inputmode="numeric"
+        >
+
+    </div>
+
+</div>
 
 
         <!-- =================================================
@@ -743,10 +790,22 @@
 
     </section>
 
+    <script>
+
+    console.log(
+    "HTML Test zweite Box:",
+    document.getElementById(
+        "secondReadingInputs"
+    )
+    );
+
+    </script>
+
 
     <!-- =====================================================
          JAVASCRIPT
          ===================================================== -->
+
 
     <script src="script.js"></script>
 
@@ -754,7 +813,10 @@
 
     <script src="js/clockSettingMode.js"></script>
 
+    <script src="js/clockFeedback.js"></script>
+
     <script src="js/clockTraining.js"></script>
+
 
 
 </div>
