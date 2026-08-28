@@ -1,43 +1,50 @@
-/* ===========================
-   Allgemein
-=========================== */
+/* ==========================================================
+   Hirnleistungstraining
+   Style.css
+   ========================================================== */
 
-*{
-    box-sizing:border-box;
+
+/* ==========================================================
+   Allgemein
+   ========================================================== */
+
+* {
+    box-sizing: border-box;
 }
 
-body{
+body {
 
-    margin:0;
-    padding:30px;
+    margin: 0;
 
-    background:#fff5eb;
+    padding: 30px;
+
+    background: #fff5eb;
 
     font-family:
         "Segoe UI",
         Arial,
         sans-serif;
 
-    color:#333;
+    color: #333;
 
 }
 
 
-/* ===========================
+/* ==========================================================
    Hauptcontainer
-=========================== */
+   ========================================================== */
 
-.container{
+.container {
 
-    max-width:1200px;
+    max-width: 1200px;
 
-    margin:auto;
+    margin: auto;
 
-    background:white;
+    padding: 40px;
 
-    border-radius:24px;
+    background: white;
 
-    padding:40px;
+    border-radius: 24px;
 
     box-shadow:
         0 12px 30px rgba(0,0,0,.08);
@@ -45,658 +52,519 @@ body{
 }
 
 
-/* ===========================
+
+/* ==========================================================
    Kopfbereich
-=========================== */
+   ========================================================== */
 
-header{
 
-    text-align:center;
+header {
 
-    margin-bottom:40px;
+    text-align: center;
 
-}
-
-h1{
-
-    margin:0;
-
-    font-size:42px;
-
-    color:#e67e22;
-
-}
-
-.subtitle{
-
-    margin-top:8px;
-
-    color:#777;
-
-    font-size:20px;
+    margin-bottom: 40px;
 
 }
 
 
-/* ===========================
+h1 {
+
+    margin: 0;
+
+    font-size: 42px;
+
+    color: #e67e22;
+
+}
+
+
+.subtitle {
+
+    margin-top: 8px;
+
+    font-size: 20px;
+
+    color: #777;
+
+}
+
+
+
+/* ==========================================================
    Einstellungen
-=========================== */
+   ========================================================== */
 
-.settings{
 
-    background:#fffaf5;
+.settings {
 
-    border:2px solid #ffe4c7;
+    margin-bottom: 40px;
 
-    border-radius:20px;
+    padding: 30px;
 
-    padding:30px;
+    background: #fffaf5;
 
-    margin-bottom:40px;
+    border: 2px solid #ffe4c7;
 
-}
-
-.settings h2{
-
-    margin-top:0;
-
-    color:#d35400;
-
-}
-
-.setting{
-
-    margin-bottom:25px;
-
-}
-
-.setting label{
-
-    font-weight:600;
-
-}
-
-.setting > label{
-
-    display:block;
-
-    margin-bottom:10px;
-
-}
-
-.radioGroup{
-
-    display:flex;
-
-    flex-wrap:wrap;
-
-    gap:30px;
-
-}
-
-.radioGroup label{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:8px;
-
-    font-weight:500;
-
-}
-
-.radioGroup small{
-
-    color:#777;
-
-    margin-left:5px;
-
-}
-
-input[type="number"]{
-
-    width:120px;
-
-    padding:10px;
-
-    font-size:18px;
-
-    border-radius:10px;
-
-    border:1px solid #ccc;
-
-}
-
-input[type="checkbox"]{
-
-    transform:scale(1.2);
-
-}
-
-input[type="radio"]{
-
-    transform:scale(1.15);
+    border-radius: 20px;
 
 }
 
 
-/* ===========================
+.settings h2 {
+
+    margin-top: 0;
+
+    color: #d35400;
+
+}
+
+
+.setting {
+
+    margin-bottom: 25px;
+
+}
+
+
+.setting > label,
+.settingTitle {
+
+    display: block;
+
+    margin-bottom: 10px;
+
+    font-weight: bold;
+
+}
+
+
+
+.radioGroup {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 30px;
+
+}
+
+
+.radioGroup label {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    font-weight: 500;
+
+}
+
+
+.radioGroup small {
+
+    margin-left: 5px;
+
+    color: #777;
+
+}
+
+
+
+/* ==========================================================
+   Formularelemente
+   ========================================================== */
+
+
+input[type="number"] {
+
+    width: 120px;
+
+    padding: 10px;
+
+    font-size: 18px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 10px;
+
+}
+
+
+input[type="checkbox"] {
+
+    transform: scale(1.2);
+
+}
+
+
+input[type="radio"] {
+
+    transform: scale(1.15);
+
+}
+
+
+
+/* ==========================================================
    Buttons
-=========================== */
+   ========================================================== */
 
-.buttonBar{
 
-    display:flex;
+.buttonBar {
 
-    justify-content:center;
+    display: flex;
 
-    flex-wrap:wrap;
+    justify-content: center;
 
-    gap:20px;
+    flex-wrap: wrap;
 
-    margin-top:35px;
+    gap: 20px;
 
-}
-
-button{
-
-    border:none;
-
-    border-radius:14px;
-
-    background:#e67e22;
-
-    color:white;
-
-    padding:16px 28px;
-
-    font-size:19px;
-
-    font-weight:bold;
-
-    cursor:pointer;
-
-    transition:.2s;
-
-}
-
-button:hover{
-
-    background:#cf6a13;
-
-    transform:translateY(-2px);
-
-}
-
-button:disabled{
-
-    opacity:.5;
-
-    cursor:default;
+    margin-top: 35px;
 
 }
 
 
-/* Buttons werden zunächst versteckt */
+button {
+
+    padding: 16px 28px;
+
+    border: none;
+
+    border-radius: 14px;
+
+    background: #e67e22;
+
+    color: white;
+
+    font-size: 19px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: .2s;
+
+}
+
+
+button:hover {
+
+    background: #cf6a13;
+
+    transform: translateY(-2px);
+
+}
+
+
+button:disabled {
+
+    opacity: .5;
+
+    cursor: default;
+
+}
+
+
+
+/* ==========================================================
+   Standardmäßig ausgeblendete Elemente
+   ========================================================== */
+
 
 #endMemoryBtn,
 #checkBtn,
 #newRoundBtn,
-#customTimeContainer{
+#customTimeContainer {
 
-    display:none;
+    display: none;
 
 }
 
 
-/* ===========================
+
+/* ==========================================================
    Spielbereich
-=========================== */
+   ========================================================== */
 
-#gameArea{
 
-    text-align:center;
+#gameArea {
 
-}
-
-#phaseTitle{
-
-    color:#d35400;
-
-    margin-bottom:30px;
-
-    font-size:30px;
+    text-align: center;
 
 }
 
 
-/* ===========================
-   Karten oben
-=========================== */
+#phaseTitle {
 
-.sequence{
+    margin-bottom: 30px;
 
-    display:flex;
+    font-size: 30px;
 
-    justify-content:center;
-
-    flex-wrap:wrap;
-
-    gap:22px;
-
-    margin-bottom:45px;
+    color: #d35400;
 
 }
 
-.card{
 
-    width:90px;
 
-    height:90px;
+/* ==========================================================
+   Karten
+   ========================================================== */
 
-    border-radius:18px;
 
-    display:flex;
+.sequence {
 
-    justify-content:center;
+    display: flex;
 
-    align-items:center;
+    justify-content: center;
 
-    font-size:42px;
+    flex-wrap: wrap;
 
-    font-weight:bold;
+    gap: 22px;
 
-    color:white;
+    margin-bottom: 45px;
+
+}
+
+
+.card {
+
+    width: 90px;
+
+    height: 90px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    border-radius: 18px;
+
+    font-size: 42px;
+
+    font-weight: bold;
+
+    color: white;
 
     box-shadow:
+
         0 6px 12px rgba(0,0,0,.15);
 
 }
 
-
-/* ===========================
+/* ==========================================================
    Antwortkarten
-=========================== */
+   ========================================================== */
 
-.answers{
 
-    display:flex;
+.answers {
 
-    justify-content:center;
+    display: flex;
 
-    flex-wrap:wrap;
+    justify-content: center;
 
-    gap:24px;
+    flex-wrap: wrap;
 
-    margin-bottom:40px;
+    gap: 24px;
+
+    margin-bottom: 40px;
 
 }
 
-.answerCard{
 
-    width:105px;
+.answerCard {
 
-    background:#fffaf5;
+    width: 105px;
 
-    border-radius:18px;
+    padding: 18px;
 
-    padding:18px;
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 16px;
+
+    background: #fffaf5;
+
+    border-radius: 18px;
 
     box-shadow:
+
         0 4px 10px rgba(0,0,0,.08);
 
-    display:flex;
-
-    flex-direction:column;
-
-    align-items:center;
-
-    gap:16px;
-
 }
 
-.colorBox{
 
-    width:58px;
+.colorBox {
 
-    height:58px;
+    width: 58px;
 
-    border-radius:12px;
+    height: 58px;
 
-}
-
-.answerCard input{
-
-    width:60px;
-
-    height:52px;
-
-    text-align:center;
-
-    font-size:28px;
-
-    text-transform:uppercase;
-
-    border-radius:10px;
-
-    border:2px solid #ccc;
+    border-radius: 12px;
 
 }
 
 
-/* ===========================
+.answerCard input {
+
+    width: 60px;
+
+    height: 52px;
+
+    text-align: center;
+
+    font-size: 28px;
+
+    text-transform: uppercase;
+
+    border: 2px solid #ccc;
+
+    border-radius: 10px;
+
+}
+
+
+
+/* ==========================================================
    Richtig / Falsch
-=========================== */
+   ========================================================== */
 
-.correct{
 
-    background:#b8e994 !important;
+.correct {
 
-    border-color:#5ca641 !important;
+    background: #b8e994 !important;
 
-}
-
-.wrong{
-
-    background:#ffb5ad !important;
-
-    border-color:#d63031 !important;
+    border-color: #5ca641 !important;
 
 }
 
 
-/* ===========================
+.wrong {
+
+    background: #ffb5ad !important;
+
+    border-color: #d63031 !important;
+
+}
+
+
+
+/* ==========================================================
    Ergebnis
-=========================== */
-
-#result{
-
-    margin-top:30px;
-
-    font-size:32px;
-
-    font-weight:bold;
-
-    color:#d35400;
-
-}
+   ========================================================== */
 
 
-/* ===========================
-   Responsive
-=========================== */
+#result {
 
-@media(max-width:900px){
+    margin-top: 30px;
 
-    .container{
+    font-size: 32px;
 
-        padding:20px;
+    font-weight: bold;
 
-    }
-
-    .card{
-
-        width:75px;
-        height:75px;
-
-        font-size:34px;
-
-    }
-
-    .answerCard{
-
-        width:90px;
-
-    }
+    color: #d35400;
 
 }
 
-/* ===================================
+
+
+/* ==========================================================
    Tabs
-=================================== */
+   ========================================================== */
 
-.tabs{
 
-    display:flex;
+.tabs {
 
-    justify-content:center;
+    display: flex;
 
-    gap:12px;
+    justify-content: center;
 
-    margin-top:30px;
+    gap: 12px;
 
-    margin-bottom:10px;
+    margin-top: 30px;
 
-}
-
-.tab{
-
-    background:#f5e4d1;
-
-    color:#d35400;
-
-    border:none;
-
-    padding:12px 24px;
-
-    border-radius:12px;
-
-    cursor:pointer;
-
-    font-size:17px;
-
-    font-weight:600;
-
-    transition:.2s;
-
-}
-
-.tab:hover{
-
-    background:#f0cfa8;
-
-}
-
-.tab.active{
-
-    background:#e67e22;
-
-    color:white;
+    margin-bottom: 10px;
 
 }
 
 
-/* ===================================
-   Seiten
-=================================== */
+.tab {
 
-.page{
+    padding: 12px 24px;
 
-    display:none;
+    background: #f5e4d1;
 
-}
+    color: #d35400;
 
-.page.active{
+    border: none;
 
-    display:block;
+    border-radius: 12px;
 
-}
+    cursor: pointer;
 
-/* ===========================
-   Uhrentraining
-=========================== */
+    font-size: 17px;
 
+    font-weight: 600;
 
-#clockContainer{
-
-position:relative;
-
-width:520px;
-
-height:520px;
-
-margin:40px auto;
+    transition: .2s;
 
 }
 
 
-.therapyClock{
+.tab:hover {
 
-position:absolute;
-
-left:0;
-
-top:0;
+    background: #f0cfa8;
 
 }
 
 
-.clockCircle{
+.tab.active {
 
-fill:white;
+    background: #e67e22;
 
-stroke:#e67e22;
-
-stroke-width:8;
+    color: white;
 
 }
 
 
 
-.clockInput{
+/* ==========================================================
+   Seitensteuerung
+   ========================================================== */
 
-position:absolute;
-
-width:50px;
-
-height:50px;
-
-border-radius:50%;
-
-border:2px solid #ccc;
-
-text-align:center;
-
-font-size:24px;
-
-font-weight:bold;
-
-z-index:2;
-
-}
-
-
-
-.clockInput.correct{
-
-background:#b8e994;
-
-border-color:green;
-
-}
-
-
-.clockInput.wrong{
-
-background:#ffb5ad;
-
-border-color:red;
-
-}
-
-.settingTitle {
-
-    display:block;
-
-    font-weight:bold;
-
-    margin-bottom:10px;
-
-}
-
-.hourTick {
-
-    stroke-width:4;
-
-}
-
-
-.minuteTick {
-
-    stroke-width:1;
-
-}
-
-
-
-.clockCenter {
-
-    fill:black;
-
-}
-
-
-
-.hourHand {
-
-    stroke: black;
-    stroke-width: 8;
-    stroke-linecap: round;
-
-}
-
-
-.minuteHand {
-
-    stroke: black;
-    stroke-width: 5;
-    stroke-linecap: round;
-
-}
-
-
-.handLayer {
-
-    pointer-events: none;
-
-}
 
 .page {
 
-    display:none;
-
-}
-
-
-.page.active {
-
-    display:block;
-
-}
-
-/* Unterseiten Steuerung */
-
-.page {
     display: none;
+
 }
 
 
 .page.active {
+
     display: block;
+
 }
 
-/* ============================
+
+
+/* ==========================================================
    Uhrentraining
-   ============================ */
+   ========================================================== */
 
-
-/* Uhr größer und mittig */
 
 #clockContainer {
 
-    width: 560px;
-    height: 560px;
+    width: 520px;
+
+    height: 520px;
 
     margin: 30px auto;
 
@@ -705,9 +573,6 @@ border-color:red;
 }
 
 
-
-
-/* SVG der Uhr */
 
 .therapyClock {
 
@@ -719,22 +584,10 @@ border-color:red;
 
 
 
+/* ==========================================================
+   Uhr SVG
+   ========================================================== */
 
-/* Ziffern auf der Ableseuhr */
-
-.clockNumber {
-
-    font-size: 34px;
-
-    font-weight: bold;
-
-    fill: #222;
-
-}
-
-
-
-/* Außenkreis */
 
 .clockCircle {
 
@@ -747,8 +600,16 @@ border-color:red;
 }
 
 
+.clockNumber {
 
-/* Stundenstriche */
+    font-size: 34px;
+
+    font-weight: bold;
+
+    fill: #222;
+
+}
+
 
 .hourTick {
 
@@ -759,9 +620,6 @@ border-color:red;
 }
 
 
-
-/* Minutenstriche */
-
 .minuteTick {
 
     stroke: #666;
@@ -771,10 +629,6 @@ border-color:red;
 }
 
 
-
-
-/* Mittelpunkt */
-
 .clockCenter {
 
     fill: #222;
@@ -783,9 +637,10 @@ border-color:red;
 
 
 
+/* ==========================================================
+   Uhrzeiger
+   ========================================================== */
 
-
-/* Zeiger */
 
 .hourHand {
 
@@ -796,7 +651,6 @@ border-color:red;
     stroke-linecap: round;
 
 }
-
 
 
 .minuteHand {
@@ -810,15 +664,21 @@ border-color:red;
 }
 
 
+.handLayer {
+
+    pointer-events: none;
+
+}
+
+/* ==========================================================
+   Uhrzeit Eingabe
+   ========================================================== */
 
 
+#readingInputs,
+#secondReadingInputs {
 
-/* ============================
-   Uhrzeit Eingabe HH:MM
-   ============================ */
-
-
-#readingInputs {
+    display: flex;
 
     justify-content: center;
 
@@ -832,24 +692,22 @@ border-color:red;
 
 
 
-
-#readingInputs input {
+#readingInputs input,
+#secondReadingInputs input {
 
     width: 90px;
 
     height: 65px;
 
-    font-size: 36px;
-
     text-align: center;
 
-    border-radius: 12px;
+    font-size: 36px;
 
     border: 2px solid #aaa;
 
+    border-radius: 12px;
+
 }
-
-
 
 
 
@@ -863,6 +721,9 @@ border-color:red;
 
 
 
+/* ==========================================================
+   Ziffern-Eingabefelder der Uhr
+   ========================================================== */
 
 
 .clockInput {
@@ -873,34 +734,61 @@ border-color:red;
 
     height: 55px;
 
-    font-size: 28px;
-
     text-align: center;
+
+    font-size: 28px;
 
     border-radius: 50%;
 
     border: 2px solid #aaa;
 
+    background: white;
+
 }
 
 
 
+/* aktives Beschriftungsfeld */
+
+
+.clockInput:focus {
+
+    outline: 4px solid #d63031;
+
+    outline-offset: 2px;
+
+    border-color: #d63031;
+
+}
+
+
+
+/* Ergebnisfarben */
 
 
 .clockInput.correct {
 
     background-color: #c8f7c5;
 
+    border-color: green;
+
 }
-
-
 
 
 .clockInput.wrong {
 
     background-color: #f7c5c5;
 
+    border-color: red;
+
 }
+
+
+
+/* ==========================================================
+   Aufgabenanzeige Uhr
+   ========================================================== */
+
 
 #settingTask {
 
@@ -917,20 +805,325 @@ border-color:red;
 
     display: block;
 
-    font-size: 42px;
-
     margin-top: 8px;
 
+    font-size: 42px;
+
 }
+
+
+
+/* ==========================================================
+   Zeiger Einstellmodus
+   ========================================================== */
+
 
 .setting-hit-area {
+
     stroke: transparent;
+
     stroke-width: 35px;
+
     fill: none;
+
     cursor: grab;
+
     pointer-events: stroke;
+
 }
 
+
+
 .setting-hit-area:active {
+
     cursor: grabbing;
+
 }
+
+
+
+/* ==========================================================
+   Responsive Anpassungen
+   ========================================================== */
+
+
+@media(max-width:900px) {
+
+
+    body {
+
+        padding: 15px;
+
+    }
+
+
+    .container {
+
+        padding: 20px;
+
+    }
+
+
+    h1 {
+
+        font-size: 34px;
+
+    }
+
+
+    .subtitle {
+
+        font-size: 18px;
+
+    }
+
+
+    .card {
+
+        width: 75px;
+
+        height: 75px;
+
+        font-size: 34px;
+
+    }
+
+
+    .answerCard {
+
+        width: 90px;
+
+    }
+
+
+    #clockContainer {
+
+        width: min(520px, 95vw);
+
+        height: min(520px, 95vw);
+
+    }
+
+
+    .clockInput {
+
+        width: 48px;
+
+        height: 48px;
+
+        font-size: 24px;
+
+    }
+
+
+    #readingInputs input,
+    #secondReadingInputs input {
+
+        width: 75px;
+
+        height: 55px;
+
+        font-size: 30px;
+
+    }
+
+}
+
+/* ==========================================================
+   Zusatz: Lesefelder Uhrentraining
+   gemeinsames Design für beide Lösungsfelder
+   ========================================================== */
+
+
+#readingInputContainer {
+
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 18px;
+
+    margin-top: 25px;
+
+}
+
+
+
+.readingBox {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 18px 25px;
+
+    background: #fffaf5;
+
+    border: 2px solid #ffe4c7;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 5px 15px rgba(0,0,0,.08);
+
+}
+
+
+
+.readingBox input {
+
+    width: 90px;
+
+    height: 65px;
+
+    text-align: center;
+
+    font-size: 36px;
+
+    font-weight: bold;
+
+    color: #333;
+
+    background: white;
+
+    border: 2px solid #ccc;
+
+    border-radius: 12px;
+
+}
+
+
+
+.readingBox input:focus {
+
+    outline: 4px solid #e67e22;
+
+    outline-offset: 2px;
+
+    border-color: #e67e22;
+
+}
+
+
+
+.timeSeparator {
+
+    font-size: 40px;
+
+    font-weight: bold;
+
+    color: #d35400;
+
+}
+
+
+
+/* ==========================================================
+   Mobile Optimierung Lesefelder
+   ========================================================== */
+
+
+@media(max-width:600px) {
+
+
+    .readingBox {
+
+        padding: 14px;
+
+        gap: 10px;
+
+        width: 95%;
+
+    }
+
+
+    .readingBox input {
+
+        width: 70px;
+
+        height: 55px;
+
+        font-size: 30px;
+
+    }
+
+
+    .timeSeparator {
+
+        font-size: 32px;
+
+    }
+
+}
+
+
+
+/* ==========================================================
+   Allgemeine Touch Verbesserungen
+   ========================================================== */
+
+
+input {
+
+    -webkit-tap-highlight-color: transparent;
+
+}
+
+
+
+button,
+input {
+
+    touch-action: manipulation;
+
+}
+
+
+
+/* ==========================================================
+   Kleine optische Trennung zweite Lösung
+   ========================================================== */
+
+
+#secondReadingInputs {
+
+    animation: fadeInBox .2s ease-in-out;
+
+}
+
+
+
+@keyframes fadeInBox {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(-8px);
+
+    }
+
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+
+    }
+
+}
+
+.hidden{
+    display:none;
+}
+
+
