@@ -15,6 +15,8 @@
 // Globale Variablen
 // ===============================
 
+
+
 const colors = [
 
     "#E53935", // Rot
@@ -43,13 +45,6 @@ let memoryTimer = null;
 // ===============================
 // Start
 // ===============================
-
-document.addEventListener(
-    "DOMContentLoaded",
-    init
-);
-
-
 
 function init(){
 
