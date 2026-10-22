@@ -1157,3 +1157,8 @@ function switchPage(pageId){
         );
 
 }
+
+document.addEventListener(
+    "DOMContentLoaded",
+    init
+);
